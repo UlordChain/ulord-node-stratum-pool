@@ -1,0 +1,90 @@
+{
+    "enabled": true,
+    "coin": "ulord.json",
+
+    "address": "uWJj7fyEyqSFMqdcbk6i9TqnSyZPmsuiqz",
+    "_comment_address": "pools ulord address; ex, UjKNeYth9s1QkW1N6ubSorfKPA9JvkC39D",
+
+    "zAddress": "uWJj7fyEyqSFMqdcbk6i9TqnSyZPmsuiqz",
+    "_comment_zAddress": "shielding not required in ulord, not used",
+
+    "tAddress": "uWJj7fyEyqSFMqdcbk6i9TqnSyZPmsuiqz",
+    "_comment_tAddress": "set to same as pools ulord address; ex, UWWP7aRB2sTkvfEZ2sgAeKurGF1TubHw4E",
+
+    "validateWorkerUsername": true,
+
+    "invalidAddress": "uhpm1PFGb56G3aZxF4feueab98kQcbLixk",
+
+    "walletInterval": 1,
+    "_comment_walletInterval": "Used to cache komodo coin stats, shielding not performed.",
+
+    "rewardRecipients": {
+        "uVvfixZ1rAXx7ktFCNuRgHrU5yWoDNurEy": 1.0
+    },
+
+    "tlsOptions": {
+        "enabled": false,
+        "serverKey":"",
+        "serverCert":"",
+        "ca":""
+    },
+
+    "paymentProcessing": {
+	"minConf": 10,
+        "enabled": true,
+        "paymentMode": "pplnt",
+        "_comment_paymentMode":"prop, pplnt",
+        "paymentInterval":60 ,
+        "_comment_paymentInterval": "Interval in seconds to check and perform payments.",
+        "minimumPayment": 0.1,
+        "maxBlocksPerPayment": 50,
+        "daemon": {
+            "host": "127.0.0.1",
+            "port": 19889,
+            "user": "ulordpool",
+            "password": "ulordpool"
+        }
+    },
+
+    "ports": {
+        "7200": {
+            "tls":false,
+            "diff": 0.05,
+            "varDiff": {
+                "minDiff": 0.04,
+                "maxDiff": 16,
+                "targetTime": 15,
+                "retargetTime": 60,
+                "variancePercent": 30
+            }
+        }
+    },
+
+    "daemons": [
+	{   
+            "host": "127.0.0.1",
+            "port": 19889,
+            "user": "ulordpool",
+            "password": "ulordpool"
+        }
+    ],
+
+    "p2p": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 19333,
+        "disableTransactions": true
+    },
+
+    "mposMode": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 3306,
+        "user": "me",
+        "password": "mypass",
+        "database": "kmd",
+        "checkPassword": true,
+        "autoCreateWorker": false
+    }
+
+}

@@ -1,0 +1,183 @@
+<style>
+    #topCharts,blockCharts{
+        padding: 0 10px;
+    }
+    #topCharts > div > div > svg{
+        display: block;
+        height: 340px;
+    }
+    #boxesLower > div {
+        display: flex;
+    }
+    #boxesLower > div > div {
+        flex: 1 1 auto;
+        margin: 0 9px 18px 9px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+    .boxStatsList > div{
+        padding: 5px 20px;
+    }
+    .boxStatsList > div > div{
+        padding: 3px;
+    }
+    #charts {
+        width: 1120px;
+        height: 380px;
+    }
+</style>
+
+
+<div class="page-container">
+    <div class="desktop-100">
+        <div class="miner-content-container">
+            <div class="miner-content-wrap">
+                <div class="faq-wrap">
+                    <div class="form-title">
+                        <h2 class="statisticsT1">Hashrate</h2>
+                    </div>
+                    <div id="topCharts">
+                        <div class="chartWrapper">
+                            <div class="chartHolder" id="charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var option = indexOption();
+		$(function(){
+			if(window.dealWithEventListener){
+        
+        statsSource.removeEventListener('message',window.dealWithEventListener);
+        window.statsSource.removeEventListener('message',window.dealWithEventListener);
+        }
+
+		})
+    var Chart = echarts.init(document.getElementById('charts'));
+    Chart.showLoading();
+    Chart.setOption(option);
+    var poolHashrateData;
+    var poolHashrateChart;
+    var statData;
+    var poolKeys;
+    function buildChartData(){
+        var pools = {};
+        poolKeys = [];
+        for (var i = 0; i < statData.length; i+=10){
+            for (var pool in statData[i].pools){
+                if (poolKeys.indexOf(pool) === -1)
+                    poolKeys.push(pool);
+            }
+        }
+
+        for (var i = 0; i < statData.length; i+=10) {
+            var time = statData[i].time * 1000;
+            for (var f = 0; f < poolKeys.length; f++){
+                var pName = poolKeys[f];
+                var a = pools[pName] = (pools[pName] || {
+                    hashrate: []
+                });
+                if (pName in statData[i].pools){
+                    a.hashrate.push([time, statData[i].pools[pName].hashrate]);
+                }
+                else{
+                    a.hashrate.push([time, 0]);
+                }
+            }
+        }
+
+        poolHashrateData = [];
+        for (var pool in pools){
+            poolHashrateData.push({
+                key: pool,
+                values: pools[pool].hashrate
+            });
+            $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
+        }
+    }
+
+    function calculateAverageHashrate(pool) {
+        var count = 0;
+        var total = 1;
+        var avg = 0;
+        for (var i = 0; i < poolHashrateData.length; i++) {
+            count = 0;
+            for (var ii = 0; ii < poolHashrateData[i].values.length; ii++) {
+                if (pool == null || poolHashrateData[i].key === pool) {
+                    count++;
+                    avg += parseFloat(poolHashrateData[i].values[ii][1]);
+                }
+            }
+            if (count > total)
+                total = count;
+        }
+        avg = avg / total;
+        return avg;
+    }
+
+    function getReadableHashRateString(hashrate){
+       var i = 0;
+        var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
+        while (hashrate >= 1024){
+            hashrate = hashrate / 1024;
+            i++;
+        }
+        return hashrate.toFixed(2) + byteUnits[i];
+    }
+
+
+    function max(arr){
+        var maxNum = arr[0][1];
+        for(var i = 1;i < arr.length;i++){
+            if(arr[i][1] > maxNum){
+                maxNum = arr[i][1];
+            }
+        }
+        return maxNum;
+    }
+
+    function displayCharts(data){
+        for (var i = 0;i < data.length;i+=10) {
+            if (new Date(data[0].time*1000).getMinutes()%5 !== 0){
+                data.shift();
+                continue;
+            } else break;
+        }
+        // console.log(data);
+        var time = [];
+        for (i = 0;i < data.length;i+=10) {
+            console.log(new Date(data[0].time * 1000).getMinutes());
+            time.push([data[i].time * 1000,data[i].pools.ulord.hashrate]);
+        }
+        Chart.setOption({
+            series: [{
+                name: 'Ulord',
+                type: 'line',
+                data: time,
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        width: 1.5
+                    }
+                }
+            }]
+        });
+        Chart.hideLoading();
+    }
+
+    function triggerChartUpdates(){
+       // poolHashrateChart.update();
+    }
+
+	
+    $.getJSON('/api/pool_stats', function(data){
+        statData = data;
+        buildChartData();
+        displayCharts(data);
+    });
+</script>
