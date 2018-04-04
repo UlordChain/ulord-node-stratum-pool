@@ -125,7 +125,7 @@ Credits
 * [svirusxxx](//github.com/svirusxxx) - sponsored development of MPOS mode
 * [icecube45](//github.com/icecube45) - helping out with the repo wiki
 * [Fcases](//github.com/Fcases) - ordered me a pizza <3
-* Those that contributed to [node-stratum-pool](//github.com/zone117x/node-stratum-pool#credits)
+* Those that contributed to [node-stratum-pool](//github.com/UlordChain/node-stratum-pool#credits)
 
 
 License
