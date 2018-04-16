@@ -113,42 +113,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         }, true);
     }
 
-    function validateTAddress(callback) {
-        daemon.cmd('validateaddress', [poolOptions.tAddress], function (result) {
-            if (result.error) {
-                logger.error(logSystem, logComponent, 'Error with payment processing daemon ' + JSON.stringify(result.error));
-                callback(true);
-            }
-            else if (!result.response || !result.response.ismine) {
-                logger.error(logSystem, logComponent,
-                    'Daemon does not own pool address - payment processing can not be done with this daemon, '
-                    + JSON.stringify(result.response));
-                callback(true);
-            }
-            else {
-                callback()
-            }
-        }, true);
-    }
-
-    function validateZAddress(callback) {
-        daemon.cmd('z_validateaddress', [poolOptions.zAddress], function (result) {
-            if (result.error) {
-                logger.error(logSystem, logComponent, 'Error with payment processing daemon ' + JSON.stringify(result.error));
-                callback(true);
-            }
-            else if (!result.response || !result.response.ismine) {
-                logger.error(logSystem, logComponent,
-                    'Daemon does not own pool address - payment processing can not be done with this daemon, '
-                    + JSON.stringify(result.response));
-                callback(true);
-            }
-            else {
-                callback()
-            }
-        }, true);
-    }
-
     function getBalance(callback) {
         daemon.cmd('getbalance', [], function (result) {
             if (result.error) {
