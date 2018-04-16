@@ -5,12 +5,6 @@
     "address": "uWJj7fyEyqSFMqdcbk6i9TqnSyZPmsuiqz",
     "_comment_address": "pools ulord address; ex, UjKNeYth9s1QkW1N6ubSorfKPA9JvkC39D",
 
-    "zAddress": "uWJj7fyEyqSFMqdcbk6i9TqnSyZPmsuiqz",
-    "_comment_zAddress": "shielding not required in ulord, not used",
-
-    "tAddress": "uWJj7fyEyqSFMqdcbk6i9TqnSyZPmsuiqz",
-    "_comment_tAddress": "set to same as pools ulord address; ex, UWWP7aRB2sTkvfEZ2sgAeKurGF1TubHw4E",
-
     "validateWorkerUsername": true,
 
     "invalidAddress": "uhpm1PFGb56G3aZxF4feueab98kQcbLixk",
