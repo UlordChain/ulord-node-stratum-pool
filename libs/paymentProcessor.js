@@ -150,9 +150,9 @@ function SetupForPool(logger, poolOptions, setupFinished) {
     }
 
     if (requireShielding === true) {
-        async.parallel([validateAddress, validateTAddress, validateZAddress, getBalance], asyncComplete);
+        async.parallel([validateAddress, getBalance], asyncComplete);
     } else {
-        async.parallel([validateAddress, validateTAddress, getBalance], asyncComplete);
+        async.parallel([validateAddress, getBalance], asyncComplete);
     }
 
     //get t_address coinbalance
