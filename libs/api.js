@@ -1,7 +1,43 @@
 var redis = require('redis');
 var async = require('async');
-
+var fs = require('fs');
+var md5 = require('md5')
+var path = require('path')
 var stats = require('./stats.js');
+
+var rigPath = path.resolve(__dirname,'../website/static/downloads/ulordrig.exe');
+var rigVersion = path.resolve(__dirname,'../website/static/downloads/ulordrigVersion');
+var rigState = {address:'',version:'',md5:''};
+function refreshResult(){
+	rigState.address = "https://testnet2-pool.ulord.one/downloads/ulordrig.exe";
+
+	async.waterfall([
+		function(callback){
+			fs.readFile(rigPath,function(err,data){
+				if(err){
+					callback(err)
+				}
+				rigState.md5 = md5(data)
+				callback(null)
+			})
+		},
+		function(callback){
+			fs.readFile(rigVersion,function(err,data){
+				if(err){
+					callback(err)
+				}
+				rigState.version = data
+				callback(null)
+			})
+		}
+	],function(err,result){
+		console.log(err)
+	})
+}
+
+fs.watch(rigPath,refreshResult);
+fs.watch(rigVersion,refreshResult);
+refreshResult();
 
 module.exports = function(logger, portalConfig, poolConfigs){
 
@@ -14,6 +50,10 @@ module.exports = function(logger, portalConfig, poolConfigs){
     this.handleApiRequest = function(req, res, next){
 
         switch(req.params.method){
+	    case 'rig_stats':			
+		res.header('Content-Type', 'application/json');
+		res.end(JSON.stringify(rigState));
+		return;
             case 'stats':
                 res.header('Content-Type', 'application/json');
                 res.end(portalStats.statsString);
