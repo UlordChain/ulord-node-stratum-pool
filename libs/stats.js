@@ -639,7 +639,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
                     }
                 }
 
-                coinStats.shareCount = _shareTotal;
+                coinStats.shareCount = roundTo(_shareTotal,2);
                 coinStats.maxRoundTime = _maxTimeShare;
                 coinStats.maxRoundTimeString = readableSeconds(_maxTimeShare);
                 
