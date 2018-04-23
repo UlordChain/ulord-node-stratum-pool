@@ -26,7 +26,7 @@ function refreshResult(){
 				if(err){
 					callback(err)
 				}
-				rigState.version = data
+				rigState.version = data.toString()
 				callback(null)
 			})
 		}
