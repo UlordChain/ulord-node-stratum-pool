@@ -365,7 +365,7 @@ input{
                 '<td class="home-td td-block">' +
                 '<a href="http://testnet-explorer.ulord.one/block/'+ block[0] + '" target="_blank">' + block[2] + '</a></td>' +
                 '<td class="home-td td-miner"><a href="/miners/'+ block[3].split('.')[0] +'">' + block[3].split('.')[0] + '</a></td>' +
-                '<td class="home-td "><span><small>' + formatDateTime(block[4]) + '</small></span>' + comfirms + '</td>' +
+                '<td class="home-td "><span><small>' + formatDateTime(block[4]=='x'?block[5]:block[4]) + '</small></span>' + comfirms + '</td>' +
                 '</tr>';
 
             }
