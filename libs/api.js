@@ -17,7 +17,7 @@ function refreshResult(){
 				if(err){
 					callback(err)
 				}
-				rigState.md5 = md5(data)
+				rigState.md5 = md5(data).toUpperCase()
 				callback(null)
 			})
 		},
