@@ -131,4 +131,4 @@ Credits
 License
 -------
 Released under the MIT License. See LICENSE file.
-# ulord-node-stratum-pool
+
