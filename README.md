@@ -47,7 +47,7 @@ Clone the repository and run `npm update` for all the dependencies to be install
 ```bash
 sudo apt-get install build-essential libsodium-dev npm
 sudo npm install n -g
-sudo n stable
+sudo n 4.8.7
 git clone https://github.com/UlordChain/ulord-node-stratum-pool.git ulord-node-stratum-pool
 cd ulord-node-stratum-pool
 npm update
