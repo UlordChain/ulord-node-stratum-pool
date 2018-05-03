@@ -1,0 +1,259 @@
+<style>
+	header {
+		background: #FFFFFF;
+		position: fixed;
+		width: 100%;
+		top:0;
+		z-index: 100;
+	}
+	html {
+		background-color: white;
+	}
+	body {
+        background: -moz-linear-gradient(180deg, #FFFFFF 70px, #1F1F3D 70px, #1F1F3D 530px, #FFFFFF 530px);/* FF3.6+ */
+		background: -webkit-gradient(linear, 180deg, color-stop(70px, FFFFFF), color-stop(70px, 1F1F3D), color-stop(530px, 1F1F3D), color-stop(530px, FFFFFF));/* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(180deg, #FFFFFF 70px, #1F1F3D 70px, #1F1F3D 530px, #FFFFFF 530px);;/* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(180deg, #FFFFFF 70px, #1F1F3D 70px, #1F1F3D 530px, #FFFFFF 530px);/* Opera 11.10+ */
+		background: -ms-linear-gradient(180deg, #FFFFFF 70px, #1F1F3D 70px, #1F1F3D 530px, #FFFFFF 530px);/* IE10+ */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1301FE', endColorstr='#F4F60C', GradientType='1'); /* for IE */
+		background: linear-gradient(180deg, #FFFFFF 70px, #1F1F3D 70px, #1F1F3D 530px, #FFFFFF 530px);/* W3C */
+		padding-top: 70px;
+    }
+    .home {
+        background-image: url(/static/logo_black.png);
+	}
+	header>.page-container .home-menu>ul>li>a {
+		color:#4A4A4A;
+	}
+	#workerHashrate{
+		display: block;
+		height: 340px;
+	}
+	#boxesWorkers {
+		margin-top: 50px;
+	}
+	#boxesWorkers > div {
+		display: flex;
+	}
+	#boxesWorkers > div > div {
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+	}
+	.boxStatsList i.fa{
+		height: 15px;
+		width: 33px;
+		text-align: center;
+	}
+	.boxStatsList > div{
+		padding: 5px 20px;
+	}
+	.boxStatsList > div > div{
+		padding: 3px;
+	}
+	input{
+		background:none;
+		outline:none;
+		border:0px;
+	}
+	table {
+		width: 100%;
+	}
+	.pure-table-pay {
+		border-collapse: collapse;
+		border-spacing: 0;
+		empty-cells: show;
+		margin-top: 30px;
+		/*table-layout: fixed;*/
+	}
+	.pure-table-pay thead {
+		background: #fff;
+		color: #000;
+		text-align: left;
+		vertical-align: bottom;
+	}
+	.pure-table-pay thead tr{
+		font-family: PingFang-SC-Bold;
+		font-size: 16px;
+		color: #333333;
+	}
+	.pure-table-pay tbody tr:nth-of-type(odd) {
+		background-color: #F8F9FA;
+	}
+	.pure-table-pay td, .pure-table-pay th {
+		margin: 0;
+		overflow: visible;
+		padding: 6px 12px;
+		font-family: PingFang-SC-Medium;
+		font-size: 16px;
+		color: #666666;
+	}
+	.pure-table-pay td:first-child, .pure-table-pay th:first-child {
+		border-left-width: 0;
+	}
+	
+	.payWrap .pure-table-pay td{
+		text-overflow:ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+	.offline{
+		color: red;
+	}
+	#topCharts{
+		padding: 0px 13px;
+	}
+	#minerChart {
+		width: 1120px;
+		height: 380px;
+	}
+	.mstc {
+		font-family: PingFang-SC-Bold;
+		font-size: 18px;
+		color: #FFFFFF;
+		margin:0;
+	}
+	.desktop-100 .client_status {
+		font-family: PingFang-SC-Bold;
+		font-size: 18px;
+		color: #333333;
+		padding: 0;
+		line-height: 1.5;
+	}
+	.desktop-100 .pay_status {
+		font-family: PingFang-SC-Bold;
+		font-size: 18px;
+		color: #333333;
+		padding: 0;
+		line-height: 1.5;
+	}
+	#statsTable tr td:first-of-type {
+		width: 595px;
+	}
+</style>
+<div class="miner-container">
+	<div class="info-wrap">
+		<div class="info-row">
+			<!--miner-address start-->
+			<div class="desktop-100">
+				<p class="mstc">算力统计</p>
+			</div>
+			<!--miner-address end-->
+			<!--tabs start-->
+			<div class="desktop-100">
+				<div id="miner-tab">
+                        <div class="miner-content-container">
+                            <div class="miner-content-wrap">
+                                <div class="faq-wrap">
+                                    <div id="topCharts">
+                                        <div class="chartHolder" id="minerChart">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						<div id="boxesWorkers">
+							<div class="miner-content-container">
+								<div class="miner-content-wrap">
+									<div class="faq-wrap">
+										<p class="client_status">矿机状态</p>
+										<table class="pure-table-pay">
+											<thead>
+												<tr>
+													<th><small class="minerT8">Name</small></th>
+													<th><small class="minerT9">Hashrate(Current)</small></th>
+													<th><small class="minerT10">Hashrate(Avg)</small></th>
+													<th><small class="minerT11">Diff</small></th>
+													<th><small class="minerT16">Last Share</th>
+												</tr>
+											</thead>
+											<tbody></tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="miner-content-container">
+							<div class="miner-content-wrap">
+								<div class="faq-wrap payWrap">
+									<p class="pay_status">交易状态</p>
+									{{ function readableDate(a){ return new Date(parseInt(a)).toString(); } }}
+									{{ for(var pool in it.stats.pools) { }}
+									<table class="pure-table-pay" id="statsTable">
+										<thead>
+											<tr>
+												<!--<th class="minerT2">Blocks</th>-->
+												<th class="minerT4"><small>Txid</small></th>		
+												<!--<th class="minerT5">Shares</th>-->
+												<th class="minerT6"><small>Paid</small></th>
+												<th class="minerT3"><small>Time</small></th>
+											</tr>
+										</thead>
+										<tbody>
+
+										</tbody>
+									</table>
+									{{ } }}
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+
+			<!--tabs end-->
+		</div>
+	</div>
+</div>
+<!--stats-->
+<script>
+    var _miner = "{{=String(it.stats.address).split(".")[0]}}";
+    var payData = {{=JSON.stringify(it.stats.pools)}};
+    // console.log('payData='+JSON.stringify(payData));
+    var _workerCount = 0;
+    window.statsSource = new EventSource("/api/live_stats");
+    document.querySelector('main').appendChild(document.createElement('script')).src = '/static/miner_stats.js';
+</script>
+<script>
+	$(function() {
+
+        var blockscomb = [];
+        //Datepicker
+        function formatDateTime(timeStamp) {
+            var date = new Date();
+            date.setTime(timeStamp);
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? ('0' + m) : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            var h = date.getHours();
+            h = h < 10 ? ('0' + h) : h;
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+            minute = minute < 10 ? ('0' + minute) : minute;
+            second = second < 10 ? ('0' + second) : second;
+            return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+        };
+
+        var poolData = {{=JSON.stringify(it.stats.pools)}};
+        var statAdd = {{=JSON.stringify(it.stats.address)}};
+        var minerStats = '';
+        for (var pool in poolData ) {
+            for (var p in poolData[pool].bills) {
+                var paid = poolData[pool].bills[p].payAmounts[statAdd.split(".")[0]];
+                if (paid !== undefined){
+					minerStats += '<tr>'+
+						'<td><a href="http://testnet-explorer.ulord.one/tx/'+ poolData[pool].bills[p].txid +'" target="_blank">'+ poolData[pool].bills[p].txid +'</a></td>' +
+                       /* '<td>' + Math.round(poolData[pool].payments[p].shares)+ '</td>' +*/
+						'<td>'+ poolData[pool].bills[p].payAmounts[statAdd.split(".")[0]] +' '+ poolData[pool].symbol +'</td>' +
+						'<td>' + formatDateTime(poolData[pool].bills[p].time)+ '</td>' +
+                        ' </tr>'
+				}
+			}
+            $('#statsTable tbody').html(minerStats);
+		}
+    });
+
+</script>
+
+

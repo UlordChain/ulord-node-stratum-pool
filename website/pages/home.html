@@ -1,0 +1,303 @@
+<style>
+    input {
+        background: none;
+        outline: none;
+        border: 0px;
+    }
+
+    .pure-menu a,
+    .pure-menu .pure-menu-heading {
+        padding: 0px 24px;
+    }
+    #charts {
+        width:1080px;
+        height: 380px;
+        margin:0 auto;
+    }
+    footer {
+        border:none;
+        background: transparent;
+        color:white;
+    }
+    footer a{
+        color:white!important;
+    }
+</style>
+
+
+<!--Pool Status start-->
+{{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
+<div class="home-container">
+    <div class="home-wrap">
+        <div class="info">公告：由于矿池正在陆续调试优化，可能会出现算力显示浮动，支付不定时、矿机掉线等情况。给您造成不便，敬请理解！</div>
+        <div class="info-row">
+            <div class="desktop-100">
+                {{ for(var pool in it.stats.pools) { }}
+                <div class="info-row">
+                    <div class="desktop-s">
+                        <div class="center">
+                            <h1>
+                                <span id="statsHashrate{{=pool}}">{{=it.stats.pools[pool].hashrateString}}</span>
+                            </h1>
+                            <h3>
+                                <span class="title homeT1">Current Hashrate</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="desktop-s">
+                        <div class="center">
+                            <h1>
+                                <span id="statsHashrateAvg">0.00 KH/s</span>
+                            </h1>
+                            <h3>
+                                <span class="title homeT2">Avg Hashrate</span>
+                            </h3>
+                        </div>
+
+                    </div>
+                    <div class="desktop-s">
+                        <div class="center">
+                            <h1>
+                                <span id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span>
+                            </h1>
+                            <h3>
+                                <span class="title homeT3">Miner Number</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="desktop-s">
+                        <div class="center">
+                            <h1>
+                                <span id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].workerCount}}</span>
+                            </h1>
+                            <h3>
+                                <span class="title homeT4">Mining Rig Number</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="desktop-s">
+                        <div class="center">
+                            <h1>
+                                <span id="statsNetworkSols{{=pool}}">{{=it.stats.pools[pool].poolStats.networkSolsString}}</span>
+                            </h1>
+                            <h3>
+                                <span class="title homeT5">Network Hashrate</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="desktop-s">
+                        <div class="center">
+                            <h1>
+                                <span id="statsNetworkDiff{{=pool}}">{{=(parseFloat(it.stats.pools[pool].poolStats.networkDiff)).toFixed(5)}}</span>
+                            </h1>
+                            <h3>
+                                <span class="title homeT6">Difficulty</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                {{ } }}
+            </div>
+        </div>
+    </div>
+    <div class="chartHolder" id="charts"></div>
+</div>
+
+<!--Pool Status end-->
+
+<script>
+    // window.statsSource = new EventSource("/api/live_stats");
+    $(function () {
+        statsSource.addEventListener('message', function (e) {
+            var stats = JSON.parse(e.data);
+            for (var pool in stats.pools) {
+                $('#statsMiners' + pool).text(stats.pools[pool].minerCount);
+                $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
+                $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
+                $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
+                $('#statsLuckDays' + pool).text(stats.pools[pool].luckDays);
+                $('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
+                $('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(
+                    8));
+                $('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
+                $('#statsNetworkDiff' + pool).text((parseFloat(stats.pools[pool].poolStats.networkDiff))
+                    .toFixed(5));
+                $('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats
+                    .networkSols));
+                $('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
+            }
+            $.getJSON('/api/pool_stats', function (data) {
+                statData = data;
+                buildChartData();
+                displayCharts(data);
+            });
+        });
+
+        function getReadableNetworkHashRateString(hashrate) {
+            var i = 0;
+            var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s'];
+            while (hashrate > 1000) {
+                hashrate = hashrate / 1000;
+                i++;
+            }
+            return hashrate.toFixed(2) + byteUnits[i];
+        }
+
+        var groupedByFinder = {};
+        var data = [];
+        var blockscomb = [];
+
+        // for (var i=0; i < blockscomb.length; i++) {
+        //         finder=blockscomb[i][3]; // if other doesn 't already have a property for the current letter
+        //         // create it and assign it to a new empty array
+        //         if (!(finder in groupedByFinder))
+        //             groupedByFinder[finder] = [];
+
+        //         groupedByFinder[finder].push(blockscomb[i]);
+        //     }
+
+        //     Object.keys(groupedByFinder).forEach(function(i) {
+        //         var obj = {};
+        //         obj.label = i
+        //         obj.value = groupedByFinder[i].length
+        //         data.push(obj)
+        //     });
+
+        //Datepicker
+        // function formatDateTime(timeStamp) {
+        //     var date = new Date();
+        //     date.setTime(timeStamp);
+        //     var y = date.getFullYear();
+        //     var m = date.getMonth() + 1;
+        //     m = m < 10 ? ('0' + m) : m;
+        //     var d = date.getDate();
+        //     d = d < 10 ? ('0' + d) : d;
+        //     var h = date.getHours();
+        //     h = h < 10 ? ('0' + h) : h;
+        //     var minute = date.getMinutes();
+        //     var second = date.getSeconds();
+        //     minute = minute < 10 ? ('0' + minute) : minute;
+        //     second = second < 10 ? ('0' + second) : second;
+        //     return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+        // };
+
+        // var poolData = {{=JSON.stringify(it.stats.pools)}};
+
+
+    });
+</script>
+<script>
+    var poolHashrateData;
+    // var poolHashrateChart;
+
+    var statData;
+    var poolKeys;
+    var option = indexOption();
+    var Chart = echarts.init(document.getElementById('charts'));
+    Chart.showLoading();
+    Chart.setOption(option);
+    function buildChartData() {
+        var pools = {};
+
+        poolKeys = [];
+        for (var i = 0; i < statData.length; i += 10) {
+            for (var pool in statData[i].pools) {
+                if (poolKeys.indexOf(pool) === -1)
+                    poolKeys.push(pool);
+            }
+        }
+
+        for (var i = 0; i < statData.length; i += 10) {
+            var time = statData[i].time * 1000;
+            for (var f = 0; f < poolKeys.length; f++) {
+                var pName = poolKeys[f];
+                var a = pools[pName] = (pools[pName] || {
+                    hashrate: []
+                });
+                if (pName in statData[i].pools) {
+                    a.hashrate.push([time, statData[i].pools[pName].hashrate]);
+                } else {
+                    a.hashrate.push([time, 0]);
+                }
+            }
+        }
+
+        poolHashrateData = [];
+        for (var pool in pools) {
+            poolHashrateData.push({
+                key: pool,
+                values: pools[pool].hashrate
+            });
+            $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
+        }
+    }
+
+    function calculateAverageHashrate(pool) {
+        var count = 0;
+        var total = 1;
+        var avg = 0;
+        for (var i = 0; i < poolHashrateData.length; i++) {
+            count = 0;
+            for (var ii = 0; ii < poolHashrateData[i].values.length; ii++) {
+                if (pool == null || poolHashrateData[i].key === pool) {
+                    count++;
+                    avg += parseFloat(poolHashrateData[i].values[ii][1]);
+                }
+            }
+            if (count > total)
+                total = count;
+        }
+        avg = avg / total;
+        return avg;
+    }
+
+    function getReadableHashRateString(hashrate) {
+        var i = 0;
+        var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s'];
+        while (hashrate > 1000) {
+            hashrate = hashrate / 1000;
+            i++;
+        }
+        return hashrate.toFixed(2) + byteUnits[i];
+    }
+
+    function displayCharts(data) {
+        for (var i = 0; i < data.length; i += 10) {
+            if (new Date(data[0].time * 1000).getMinutes() % 5 !== 0) {
+                data.shift();
+                continue;
+            } else break;
+        }
+        var time = [];
+        for (i = 0; i < data.length; i += 10) {
+            time.push([data[i].time * 1000, data[i].pools.ulord.hashrate]);
+        }
+        Chart.setOption({
+            legend:{
+	    	data:['矿池总算力'],
+		type:'',
+		right:55,
+		selectedMode:false
+	    },
+            series: [{
+                name: '矿池总算力',
+                type: 'line',
+                data: time,
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        width: 1.5
+                    }
+                }
+            }]
+        });
+        Chart.hideLoading();
+    }
+
+
+    $.getJSON('/api/pool_stats', function (data) {
+        statData = data;
+        buildChartData();
+        displayCharts(data);
+    });
+</script>
