@@ -345,7 +345,7 @@ app.all('*',function (req, res, next) {
             });        
         } else {
           app.listen(portalConfig.website.port, portalConfig.website.host, function () {
-            logger.debug(logSystem, 'Server', 'Website started on ' + portalConfig.website.host + ':' + portalConfig.website.port);
+            logger.debug(logSystem, 'Server', 'Website thread '+ process.env.threadNum + 'started on ' + portalConfig.website.host + ':' + portalConfig.website.port);
           });
         }
     }

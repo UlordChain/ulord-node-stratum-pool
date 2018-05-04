@@ -69,17 +69,17 @@ if (cluster.isWorker){
 
     switch(process.env.workerType){
         case 'pool':
-            new PoolWorker(logger);
-            break;
+        new PoolWorker(logger);
+        break;
         case 'paymentProcessor':
-            new PaymentProcessor(logger);
-            break;
+        new PaymentProcessor(logger);
+        break;
         case 'website':
-            new Website(logger);
-            break;
+        new Website(logger);
+        break;
         case 'profitSwitch':
-            new ProfitSwitch(logger);
-            break;
+        new ProfitSwitch(logger);
+        break;
     }
 
     return;
@@ -203,7 +203,7 @@ var spawnPoolWorkers = function(){
         } else if (!connection) {
             redisConfig = pcfg.redis;
             connection = redis.createClient(redisConfig.port, redisConfig.host);
-	    if(portalConfig.redis.password){
+            if(portalConfig.redis.password){
                 connection.auth(portalConfig.redis.password);
             }
             connection.on('ready', function(){
@@ -255,12 +255,12 @@ var spawnPoolWorkers = function(){
         }).on('message', function(msg){
             switch(msg.type){
                 case 'banIP':
-                    Object.keys(cluster.workers).forEach(function(id) {
-                        if (cluster.workers[id].type === 'pool'){
-                            cluster.workers[id].send({type: 'banIP', ip: msg.ip});
-                        }
-                    });
-                    break;
+                Object.keys(cluster.workers).forEach(function(id) {
+                    if (cluster.workers[id].type === 'pool'){
+                        cluster.workers[id].send({type: 'banIP', ip: msg.ip});
+                    }
+                });
+                break;
                 case 'shareTrack':
                     // pplnt time share tracking of workers
                     if (msg.isValidShare && !msg.isValidBlock) {
@@ -300,20 +300,20 @@ var spawnPoolWorkers = function(){
                         //logger.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+':{totalTimeSec:'+timeChangeTotal+', timeChangeSec:'+timeChangeSec+'}');
                         
                         if(Date.now() - lastShareSubmitTime >= 1000) {
-                        lastShareSubmitTime = Date.now();
-                        var operationExecutionStart = Date.now();
-                        var executedOperations = redisCommands.length;
-                        pileUp -= executedOperations;
-                        connection.multi(redisCommands).exec(function(err, replies){
-                                                             console.log("Execution time: " + (Date.now() - operationExecutionStart).toString() + " PileUp: " + pileUp.toString() + " Executed operations: " + executedOperations.toString());
-                                                             if (err)
-                                                             logger.error('PPLNT', msg.coin, 'Thread '+msg.thread, 'Error with time share processor call to redis ' + JSON.stringify(err));
-                                                             });
-                      redisCommands = [];
+                            lastShareSubmitTime = Date.now();
+                            var operationExecutionStart = Date.now();
+                            var executedOperations = redisCommands.length;
+                            pileUp -= executedOperations;
+                            connection.multi(redisCommands).exec(function(err, replies){
+                             console.log("Execution time: " + (Date.now() - operationExecutionStart).toString() + " PileUp: " + pileUp.toString() + " Executed operations: " + executedOperations.toString());
+                             if (err)
+                                 logger.error('PPLNT', msg.coin, 'Thread '+msg.thread, 'Error with time share processor call to redis ' + JSON.stringify(err));
+                         });
+                            redisCommands = [];
                         }
                         
-                       
-                        } else {
+
+                    } else {
                             // they just re-joined the pool
                             _lastStartTimes[workerAddress] = now;
                             logger.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+' re-joined.');
@@ -328,19 +328,19 @@ var spawnPoolWorkers = function(){
                         _lastStartTimes[msg.coin] = {};
                     }
                     break;
-            }
-        });
-    };
+                }
+            });
+};
 
-    var i = 0;
-    var spawnInterval = setInterval(function(){
-        createPoolWorker(i);
-        i++;
-        if (i === numForks){
-            clearInterval(spawnInterval);
-            logger.debug('Master', 'PoolSpawner', 'Spawned ' + Object.keys(poolConfigs).length + ' pool(s) on ' + numForks + ' thread(s)');
-        }
-    }, 250);
+var i = 0;
+var spawnInterval = setInterval(function(){
+    createPoolWorker(i);
+    i++;
+    if (i === numForks){
+        clearInterval(spawnInterval);
+        logger.debug('Master', 'PoolSpawner', 'Spawned ' + Object.keys(poolConfigs).length + ' pool(s) on ' + numForks + ' thread(s)');
+    }
+}, 250);
 
 };
 
@@ -356,23 +356,23 @@ var startCliListener = function(){
 
         switch(command){
             case 'blocknotify':
-                Object.keys(cluster.workers).forEach(function(id) {
-                    cluster.workers[id].send({type: 'blocknotify', coin: params[0], hash: params[1]});
-                });
-                reply('Pool workers notified');
-                break;
+            Object.keys(cluster.workers).forEach(function(id) {
+                cluster.workers[id].send({type: 'blocknotify', coin: params[0], hash: params[1]});
+            });
+            reply('Pool workers notified');
+            break;
             case 'coinswitch':
-                processCoinSwitchCommand(params, options, reply);
-                break;
+            processCoinSwitchCommand(params, options, reply);
+            break;
             case 'reloadpool':
-                Object.keys(cluster.workers).forEach(function(id) {
-                    cluster.workers[id].send({type: 'reloadpool', coin: params[0] });
-                });
-                reply('reloaded pool ' + params[0]);
-                break;
+            Object.keys(cluster.workers).forEach(function(id) {
+                cluster.workers[id].send({type: 'reloadpool', coin: params[0] });
+            });
+            reply('reloaded pool ' + params[0]);
+            break;
             default:
-                reply('unrecognized command "' + command + '"');
-                break;
+            reply('unrecognized command "' + command + '"');
+            break;
         }
     }).start();
 };
@@ -481,18 +481,26 @@ var startPaymentProcessor = function(){
 var startWebsite = function(){
 
     if (!portalConfig.website.enabled) return;
-
-    var worker = cluster.fork({
-        workerType: 'website',
-        pools: JSON.stringify(poolConfigs),
-        portalConfig: JSON.stringify(portalConfig)
-    });
-    worker.on('exit', function(code, signal){
-        logger.error('Master', 'Website', 'Website process died, spawning replacement...');
-        setTimeout(function(){
-            startWebsite(portalConfig, poolConfigs);
-        }, 2000);
-    });
+    var forkThreads = portalConfig.website.balance.enabled?portalConfig.website.balance.threads:1;
+    for (var i=0;i<forkThreads;i++){
+        var worker = cluster.fork({
+            workerType: 'website',
+            pools: JSON.stringify(poolConfigs),
+            portalConfig: JSON.stringify(portalConfig),
+            threadNum:i
+        });
+        worker.on('exit', function(code, signal){
+            logger.error('Master', 'Website', 'Website process '+ i +' died, spawning replacement...');
+            setTimeout(function(){
+                worker = cluster.fork({
+                    workerType: 'website',
+                    pools: JSON.stringify(poolConfigs),
+                    portalConfig: JSON.stringify(portalConfig),
+                    threadNum:i
+                });
+            }, 2000);
+        });
+    }
 };
 
 
