@@ -211,7 +211,10 @@
     // console.log('payData='+JSON.stringify(payData));
     var _workerCount = 0;
     window.statsSource = new EventSource("/api/live_stats");
-    document.querySelector('main').appendChild(document.createElement('script')).src = '/static/miner_stats.js';
+    var node = document.createElement('script');
+    node.id = 'miner_stats';
+    node.src = '/static/miner_stats.js';
+    document.querySelector('head').insertBefore(node,document.querySelector('#language'));
 </script>
 <script>
 	$(function() {

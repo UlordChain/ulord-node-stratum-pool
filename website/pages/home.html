@@ -109,24 +109,25 @@
     // window.statsSource = new EventSource("/api/live_stats");
     $(function () {
         statsSource.addEventListener('message', function (e) {
-            var stats = JSON.parse(e.data);
-            for (var pool in stats.pools) {
-                $('#statsMiners' + pool).text(stats.pools[pool].minerCount);
-                $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
-                $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
-                $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
-                $('#statsLuckDays' + pool).text(stats.pools[pool].luckDays);
-                $('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
-                $('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(
-                    8));
-                $('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
-                $('#statsNetworkDiff' + pool).text((parseFloat(stats.pools[pool].poolStats.networkDiff))
-                    .toFixed(5));
-                $('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats
-                    .networkSols));
-                $('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
-            }
+            //var stats = JSON.parse(e.data);
+            // for (var pool in stats.pools) {
+            //     $('#statsMiners' + pool).text(stats.pools[pool].minerCount);
+            //     $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
+            //     $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
+            //     $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
+            //     $('#statsNetworkDiff' + pool).text((parseFloat(stats.pools[pool].poolStats.networkDiff))
+            //         .toFixed(5));
+            //     $('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats
+            //         .networkSols));
+            // }
+            var pool = 'ulord';
             $.getJSON('/api/pool_stats', function (data) {
+                $('#statsMiners' + pool).text(data[data.length-1].pools.ulord.minerCount);
+                $('#statsWorkers' + pool).text(data[data.length-1].pools.ulord.workerCount);
+                $('#statsHashrate' + pool).text(getReadableHashRateString(data[data.length-1].pools.ulord.hashrate));
+                $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
+                $('#statsNetworkDiff' + pool).text(parseFloat(data[data.length-1].pools.ulord.networkDiff).toFixed(5));
+                $('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(data[data.length-1].pools.ulord.networkSols));
                 statData = data;
                 buildChartData();
                 displayCharts(data);
@@ -274,13 +275,13 @@
         }
         Chart.setOption({
             legend:{
-	    	data:['矿池总算力'],
+	    //	data:['矿池总算力'],
 		type:'',
 		right:55,
 		selectedMode:false
 	    },
             series: [{
-                name: '矿池总算力',
+             //   name: '矿池总算力',
                 type: 'line',
                 data: time,
                 smooth: true,

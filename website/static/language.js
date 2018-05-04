@@ -1,12 +1,48 @@
-
-(function () {
-     function i18n_home () {
+$(function(){
+    function i18n_home () {
                 // index.html
                 $('.hot-swapper:eq(0)').text(Home);
                 $('.hot-swapper:eq(1)').text(Blocks);
                 $('.hot-swapper:eq(3)').text(Statistics);
                 $('.hot-swapper:eq(2)').text(Workers);
                 $('.hot-swapper:eq(4)').text(FAQ);
+                //echarts
+                if(window.location.pathname.match(/^\/miners\/.+$/)){
+                    if(window.Chart){
+                        window.Chart.setOption({
+                            legend:{
+                                data:[calc]
+                            },
+                            series:[{
+                                name:calc
+                            }]
+                        })
+                    }else {
+                        $('#miner_stats')[0].onload = $('#miner_stats')[0].onreadystatechange = function(){
+                            if( !this.readyState||this.readyState=='loaded'|| this.readyState=='complete'){
+                                window.Chart.setOption({
+                                    legend:{
+                                        data:[calc]
+                                    },
+                                    series:[{
+                                        name:calc
+                                    }]
+                                })
+                            }
+
+                        };
+                    }
+                    
+                }else if(window.location.pathname=='/'){
+                    window.Chart.setOption({
+                        legend:{
+                            data:[calcSum]
+                        },
+                        series:[{
+                            name:calcSum
+                        }]
+                    })
+                }
                 // home.html
                 $('.homeT1').text(NowHashrate);
                 $('.homeT2').text(AvgHashrate);
@@ -84,67 +120,67 @@
                 $('.faqQ14').text(question14);
                 $('.faqA14').text(answer14);
                 $('.faqEnd').text(QAEnd);
-     }
-    var language
-    if(window.localStorage.getItem('userLanguage')){
-        language=window.localStorage.getItem('userLanguage');
-    }else {
-        language=(navigator.language || navigator.browserLanguage).toLowerCase();
-    }
-    var languages=['zh','en'];
-    var currentRule=(function (){
-                return i18n_home;
-    })()
-    languages.forEach(function (value) {
-
-        if(language.indexOf(value)!=-1){
-            window.currentLanguage= value;
-            jQuery.i18n.properties({
-                name: 'strings',
-                path: '/static/',
-                mode:'both',
-                checkAvailableLanguages: true,
-                language:value,
-                async: true,
-                callback: currentRule
-            });
-            $('.transition.lang>a img').attr('src','/static/country/'+value+'.png');
-        }else {
-            $('.country-list').append('<a href="javascript:;" class="country"><img src="/static/country/'+value+'.png" alt="" class="flag"></a>');
-        }
-    });
-    window.translate = translate;
-    function translate(){
-        jQuery.i18n.properties({
-            name: 'strings',
-            path: '/static/',
-            mode:'both',
-            checkAvailableLanguages: true,
-            language:currentLanguage,
-            async: true,
-            callback: currentRule
-        });
-    }
-    $(document).on('click','img[src^="/static/country/"]',function () {
-        var languageSelected = $(this).attr('src').slice(16,-4);
-        window.currentLanguage= languageSelected;
-        $('.country-list').html('');
-        languages.forEach(function (value) {
-            if(languageSelected.indexOf(value)!=-1){
-                $('.transition.lang>a img').attr('src','/static/country/'+value+'.png');
-            }else {
-                $('.country-list').append('<a href="javascript:;" class="country"><img src="/static/country/'+value+'.png" alt="" class="flag"></a>');
             }
-        });
-        window.localStorage.setItem("userLanguage",languageSelected);
-        jQuery.i18n.properties({
-            name: 'strings',
-            path: '/static/',
-            mode:'both',
-            checkAvailableLanguages: true,
-            language:languageSelected,
-            async: true,
-            callback: currentRule
-        });
-    })
-})()
+            var language
+            if(window.localStorage.getItem('userLanguage')){
+                language=window.localStorage.getItem('userLanguage');
+            }else {
+                language=(navigator.language || navigator.browserLanguage).toLowerCase();
+            }
+            var languages=['zh','en'];
+            var currentRule=(function (){
+                return i18n_home;
+            })()
+            languages.forEach(function (value) {
+
+                if(language.indexOf(value)!=-1){
+                    window.currentLanguage= value;
+                    jQuery.i18n.properties({
+                        name: 'strings',
+                        path: '/static/',
+                        mode:'both',
+                        checkAvailableLanguages: true,
+                        language:value,
+                        async: true,
+                        callback: currentRule
+                    });
+                    $('.transition.lang>a img').attr('src','/static/country/'+value+'.png');
+                }else {
+                    $('.country-list').append('<a href="javascript:;" class="country"><img src="/static/country/'+value+'.png" alt="" class="flag"></a>');
+                }
+            });
+            window.translate = translate;
+            function translate(){
+                jQuery.i18n.properties({
+                    name: 'strings',
+                    path: '/static/',
+                    mode:'both',
+                    checkAvailableLanguages: true,
+                    language:currentLanguage,
+                    async: true,
+                    callback: currentRule
+                });
+            }
+            $(document).on('click','img[src^="/static/country/"]',function () {
+                var languageSelected = $(this).attr('src').slice(16,-4);
+                window.currentLanguage= languageSelected;
+                $('.country-list').html('');
+                languages.forEach(function (value) {
+                    if(languageSelected.indexOf(value)!=-1){
+                        $('.transition.lang>a img').attr('src','/static/country/'+value+'.png');
+                    }else {
+                        $('.country-list').append('<a href="javascript:;" class="country"><img src="/static/country/'+value+'.png" alt="" class="flag"></a>');
+                    }
+                });
+                window.localStorage.setItem("userLanguage",languageSelected);
+                jQuery.i18n.properties({
+                    name: 'strings',
+                    path: '/static/',
+                    mode:'both',
+                    checkAvailableLanguages: true,
+                    language:languageSelected,
+                    async: true,
+                    callback: currentRule
+                });
+            })
+        })

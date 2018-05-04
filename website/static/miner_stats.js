@@ -182,13 +182,13 @@ function displayCharts() {
     window.hashRate = hashRate;
     Chart.setOption({
         legend: {
-            data: ['总算力'],
+          //  data: ['总算力'],
             type: '',
             right: 55,
             selectedMode: false
         },
         series: [{
-            name: '总算力',
+           // name: '总算力',
             type: 'line',
             data: hashRate,
             smooth: true,
@@ -200,7 +200,6 @@ function displayCharts() {
         }]
     })
     Chart.hideLoading();
-	console.log("updateCharts");
     return true;
 }
 
@@ -380,7 +379,7 @@ $.getJSON('/api/worker_stats?'+_miner, function(data){
 
 // live stat updates
 statsSource.addEventListener('message',dealWithEventListener); 
-function dealWithEventListener(e){
+function dealWithEventListener(){
 	// TODO, create miner_live_stats...
     // miner_live_stats will return the same josn except without the worker history
     // FOR NOW, use this to grab updated stats

@@ -56,48 +56,49 @@
 </div>
 <script>
     var poolHashrateData;
+    var stats;
     $(function() {
-        statsSource.addEventListener('message', function (e) {
-            var stats = JSON.parse(e.data);
-            poolHashrateData = [];
-            for (var pool in stats.pools) {
-                poolHashrateData.push({
-                    key: pool,
-                    values: stats.pools[pool].hashrate
-                });
-                $('#statsMiners' + pool).text(stats.pools[pool].minerCount);
-                $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
-                $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
-                $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
-                $('#statsLuckDays' + pool).text(stats.pools[pool].luckDays);
-                $('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
-                $('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(8));
-                $('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
-                $('#statsNetworkDiff' + pool).text((parseFloat(stats.pools[pool].poolStats.networkDiff)).toFixed(5));
-                $('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats.networkSols));
-                $('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
-            }
-        });
+        // statsSource.addEventListener('message', function (e) {
+        //     stats = JSON.parse(e.data);
+        //     poolHashrateData = [];
+        //     for (var pool in stats.pools) {
+        //         poolHashrateData.push({
+        //             key: pool,
+        //             values: stats.pools[pool].hashrate
+        //         });
+        //         $('#statsMiners' + pool).text(stats.pools[pool].minerCount);
+        //         $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
+        //         $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
+        //         $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
+        //         $('#statsLuckDays' + pool).text(stats.pools[pool].luckDays);
+        //         $('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
+        //         $('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(8));
+        //         $('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
+        //         $('#statsNetworkDiff' + pool).text((parseFloat(stats.pools[pool].poolStats.networkDiff)).toFixed(5));
+        //         $('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats.networkSols));
+        //         $('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
+        //     }
+        // });
 
 
-        function calculateAverageHashrate(pool) {
-            var count = 0;
-            var total = 1;
-            var avg = 0;
-            for (var i = 0; i < poolHashrateData.length; i++) {
-                count = 0;
-                for (var ii = 0; ii < poolHashrateData[i].values.length; ii++) {
-                    if (pool == null || poolHashrateData[i].key === pool) {
-                        count++;
-                        avg += parseFloat(poolHashrateData[i].values[ii][1]);
-                    }
-                }
-                if (count > total)
-                    total = count;
-            }
-            avg = avg / total;
-            return avg;
-        }
+        // function calculateAverageHashrate(pool) {
+        //     var count = 0;
+        //     var total = 1;
+        //     var avg = 0;
+        //     for (var i = 0; i < poolHashrateData.length; i++) {
+        //         count = 0;
+        //         for (var ii = 0; ii < poolHashrateData[i].values.length; ii++) {
+        //             if (pool == null || poolHashrateData[i].key === pool) {
+        //                 count++;
+        //                 avg += parseFloat(poolHashrateData[i].values[ii][1]);
+        //             }
+        //         }
+        //         if (count > total)
+        //             total = count;
+        //     }
+        //     avg = avg / total;
+        //     return avg;
+        // }
 
         function getReadableHashRateString(hashrate){
             var i = 0;
@@ -202,7 +203,6 @@
         }
 
     });
-
 
 </script>
 

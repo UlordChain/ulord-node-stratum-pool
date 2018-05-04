@@ -114,8 +114,7 @@ module.exports = function(logger){
     var buildUpdatedWebsite = function(){
         portalStats.getGlobalStats(function(){
             processTemplates();
-
-            var statData = 'data: ' + JSON.stringify(portalStats.stats) + '\n\n';
+            var statData = 'data: Stats refreshed notified\n\n';
             for (var uid in portalApi.liveStatConnections){
                 var res = portalApi.liveStatConnections[uid];
                 res.write(statData);
