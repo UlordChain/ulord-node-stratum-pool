@@ -128,7 +128,7 @@ footer .copyright {
 
 footer .copyright:hover,
 footer .footerLink:hover {
-    color: #f79826;
+    color: #f79826!important;
 }
 
 footer iframe {

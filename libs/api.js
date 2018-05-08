@@ -102,7 +102,6 @@ module.exports = function(logger, portalConfig, poolConfigs){
 									for(var w in portalStats.stats.pools[pool].workers){
 										if (w.startsWith(address)) {
 											workers[w] = portalStats.stats.pools[pool].workers[w];
-											console.log(JSON.stringify(workers[w]));
 											for (var b in balances.balances) {
 												if (w == balances.balances[b].worker) {
 													workers[w].paid = balances.balances[b].paid;
