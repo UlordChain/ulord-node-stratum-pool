@@ -44,6 +44,10 @@
         "host": "0.0.0.0",
         "port": 8080,
         "stratumHost": "cryppit.com",
+		"balance":{
+            "enabled":true,
+            "threads":3
+        },
         "stats": {
             "updateInterval": 30,
             "historicalRetention": 14400,

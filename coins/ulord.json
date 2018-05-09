@@ -1,6 +1,6 @@
 {
     "name": "Ulord",
-    "symbol": "UOS",
+    "symbol": "UT",
     "algorithm": "cryptohello",
     "txfee": 0.000005
 }
