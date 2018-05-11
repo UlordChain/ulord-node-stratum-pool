@@ -7,7 +7,7 @@ var stats = require('./stats.js');
 
 var rigPath = path.resolve(__dirname,'../website/static/downloads/ulordrig.exe');
 var rigVersion = path.resolve(__dirname,'../website/static/downloads/ulordrigVersion');
-var rigState = {address:"http://testnet-pool.ulord.one/static/downloads/ulordrig.exe",version:'0.2.0',md5:''};
+var rigState = {address:"http://testnet-pool.ulord.one/static/downloads/ulordrig.exe",version:'1.0.0',md5:''};
 function refreshResult(){
 	rigState.address = "http://testnet-pool.ulord.one/static/downloads/ulordrig.exe";
 
