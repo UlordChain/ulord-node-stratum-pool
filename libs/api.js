@@ -4,14 +4,20 @@ var fs = require('fs');
 var md5 = require('md5')
 var path = require('path')
 var stats = require('./stats.js');
+var os = require("os")
 
 var rigPath = path.resolve(__dirname,'../website/static/downloads/ulordrig.exe');
 var rigVersion = path.resolve(__dirname,'../website/static/downloads/ulordrigVersion');
-var rigState = {address:"http://testnet-pool.ulord.one/static/downloads/ulordrig.exe",version:'1.0.0',md5:''};
+var rigState = {address:"http://testnet-pool.ulord.one/static/downloads/ulordrig.exe",version:'',md5:''};
 function refreshResult(){
 	rigState.address = "http://testnet-pool.ulord.one/static/downloads/ulordrig.exe";
 
 	async.waterfall([
+		function(callback){
+			fs.readFile(rigVersion,"utf8",function(err,data){
+				rigState.version = data.replace(os.EOL,"");
+			})
+		},
 		function(callback){
 			fs.readFile(rigPath,function(err,data){
 				if(err){
