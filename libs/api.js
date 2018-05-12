@@ -16,6 +16,7 @@ function refreshResult(){
 		function(callback){
 			fs.readFile(rigVersion,"utf8",function(err,data){
 				rigState.version = data.replace(os.EOL,"");
+				callback(null);
 			})
 		},
 		function(callback){
