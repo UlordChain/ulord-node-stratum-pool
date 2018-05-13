@@ -1,7 +1,7 @@
 # Ulord - Node Open Mining Portal
 
 
-This is a Cryptohello mining pool based off of Node Open Mining Portal.
+This is a Cryptohello mining pool based on Node Open Mining Portal.
 
 Usage
 =====
