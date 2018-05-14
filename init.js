@@ -14,7 +14,7 @@ var PoolWorker = require('./libs/poolWorker.js');
 var PaymentProcessor = require('./libs/paymentProcessor.js');
 var Website = require('./libs/website.js');
 var ProfitSwitch = require('./libs/profitSwitch.js');
-
+var TLS301Holder = require('./libs/tls301holder.js');
 var algos = require('stratum-pool/lib/algoProperties.js');
 
 JSON.minify = JSON.minify || require("node-json-minify");
@@ -79,6 +79,9 @@ if (cluster.isWorker){
         break;
         case 'profitSwitch':
         new ProfitSwitch(logger);
+        break;
+        case 'tls301PR':
+        new TLS301Holder(logger);
         break;
     }
 
@@ -503,6 +506,19 @@ var startWebsite = function(){
 
     }
 };
+var start301PR = function(){
+    if(portalConfig.website.tlsOptions.enabled){
+        var worker = cluster.fork({
+            workerType: 'tls301PR'
+        })
+        worker.on('exit',function(){
+            logger.error('Master', 'TLS', 'TLS 301 Moved Permanently process died, spawning replacement...');
+            setTimeout(function(){
+                start301PR();
+            }, 2000);
+        })
+    }
+}
 
 
 
@@ -537,6 +553,8 @@ var startProfitSwitch = function(){
     startPaymentProcessor();
 
     startWebsite();
+    
+    start301PR();
 
     startProfitSwitch();
 

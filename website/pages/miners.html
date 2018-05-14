@@ -215,12 +215,11 @@
 
 </div>
 <script>
-    var payData = {{= JSON.stringify(it)}};
+    var payData = {{= JSON.stringify(it.stats.pools.ulord.workers)}};
     var data = JSON.parse(JSON.stringify(payData));
     var workderNum = [];
-    for (var worker in data.stats.pools.ulord.workers) {
+    for (var worker in data) {
         var name = worker.split('.')[0];
-        // console.log(name);
         if (!workderNum[name]) {
             workderNum[name] = 1;
         } else {
