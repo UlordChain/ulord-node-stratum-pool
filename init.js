@@ -478,30 +478,32 @@ var startPaymentProcessor = function(){
 };
 
 
-var startWebsite = function(){
+var startWebThread = function(i){
+    var worker = cluster.fork({
+        workerType: 'website',
+        pools: JSON.stringify(poolConfigs),
+        portalConfig: JSON.stringify(portalConfig),
+        threadNum:i
+    });
+    worker.on('exit', function(code, signal){
+        logger.error('Master', 'Website', 'Website process '+ i +' died, spawning replacement...');
+        setTimeout(function(){
+            startWebThread(i);
+        }, 2000);
+    });
+}
 
+var startWebsite = function(){
     if (!portalConfig.website.enabled) return;
     var forkThreads = portalConfig.website.balance.enabled?portalConfig.website.balance.threads:1;
     for (var i=0;i<forkThreads;i++){
-        var worker = cluster.fork({
-            workerType: 'website',
-            pools: JSON.stringify(poolConfigs),
-            portalConfig: JSON.stringify(portalConfig),
-            threadNum:i
-        });
-        worker.on('exit', function(code, signal){
-            logger.error('Master', 'Website', 'Website process '+ i +' died, spawning replacement...');
-            setTimeout(function(){
-                worker = cluster.fork({
-                    workerType: 'website',
-                    pools: JSON.stringify(poolConfigs),
-                    portalConfig: JSON.stringify(portalConfig),
-                    threadNum:i
-                });
-            }, 2000);
-        });
+        (function(i){
+            startWebThread(i);
+        })(i)
+
     }
 };
+
 
 
 var startProfitSwitch = function(){
