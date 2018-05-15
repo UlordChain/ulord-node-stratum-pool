@@ -92,6 +92,11 @@ module.exports = function(logger){
 
                 }
                 break;
+                case 'DROPBLOCK':
+                if(process.env.forkId!==0){
+                    pool.jobManager.processTemplate(message.rpcData);
+                }
+                break;
         }
     });
 
@@ -203,6 +208,8 @@ module.exports = function(logger){
             process.send({type: 'banIP', ip: ip});
         }).on('started', function(){
             _this.setDifficultyForProxyPort(pool, poolOptions.coin.name, poolOptions.coin.algorithm);
+        }).on('BROAD',function(result){
+            process.send({type:"BROAD",rpcData:result.response});
         });
 
         pool.start();

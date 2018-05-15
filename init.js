@@ -331,6 +331,13 @@ var spawnPoolWorkers = function(){
                         _lastStartTimes[msg.coin] = {};
                     }
                     break;
+                    case 'BROAD':
+                    Object.keys(cluster.workers).forEach(function(id) {
+                        if (cluster.workers[id].type === 'pool'){
+                            cluster.workers[id].send({type: 'DROPBLOCK', rpcData:message.rpcData});
+                        }
+                    });
+                    break;
                 }
             });
 };
