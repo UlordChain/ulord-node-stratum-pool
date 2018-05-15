@@ -22,23 +22,18 @@ you are using - a good place to start with redis is [data persistence](http://re
 
 
 #### 0) Setting up coin daemon
-Follow the build/install instructions for your coin daemon. Your coin.conf file should end up looking something like this:
+Follow the build/install instructions for your coin daemon.Your ulord.conf file should end up looking something like this(you can find
+this file at a dir named `.ulordcore`):
 ```
-daemon=1
+testnet=0
 rpcuser=ulordpool
 rpcpassword=ulordpool
-rpcport=9889
+txindex=1
+addressindex=1
+spentindex=1
+timestampindex=1
+reindex=1
 ```
-For redundancy, its recommended to have at least two daemon instances running in case one drops out-of-sync or offline,
-all instances will be polled for block/transaction updates and be used for submitting blocks. Creating a backup daemon
-involves spawning a daemon using the `-datadir=/backup` command-line argument which creates a new daemon instance with
-it's own config directory and coin.conf file. Learn about the daemon, how to use it and how it works if you want to be
-a good pool operator. For starters be sure to read:
-   * https://en.bitcoin.it/wiki/Running_bitcoind
-   * https://en.bitcoin.it/wiki/Data_directory
-   * https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_Calls_list
-   * https://en.bitcoin.it/wiki/Difficulty
-
 
 #### 1) Downloading & Installing
 
@@ -51,12 +46,15 @@ sudo n 4.8.7
 git clone https://github.com/UlordChain/ulord-node-stratum-pool.git ulord-node-stratum-pool
 cd ulord-node-stratum-pool
 npm update
-npm install
 ```
 
-##### 2) Pool config
-Take a look at the example json file inside the `pool_configs` directory. Rename it to `ulord.json` and change the
-example fields to fit your setup.
+##### 2) The overall configuration
+
+You must change the daemon address to the same as the step 0 configuration. Note that there are two places to change. If your redis is configured with a password, modify it together.Configuration file located in `./config.json`.
+
+##### 3) Pool config
+
+You can custom your configuration by modify file `pool_config/ulord.json`.The most important thing is to change pool address to yours.
 
 ```
 Please Note that: 1 Difficulty is actually 8192, 0.125 Difficulty is actually 1024.
@@ -65,7 +63,6 @@ Whenever a miner submits a share, the pool counts the difficulty and keeps addin
 
 ie: Miner 1 mines at 0.1 difficulty and finds 10 shares, the pool sees it as 1 share. Miner 2 mines at 0.5 difficulty and finds 5 shares, the pool sees it as 2.5 shares. 
 ```
-
 
 ##### [Optional, recommended] Setting up blocknotify
 1. In `config.json` set the port and password for `blockNotifyListener`
