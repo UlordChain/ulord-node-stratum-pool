@@ -171,7 +171,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
             data.pools[pool] = {
                 hashrate: stats.pools[pool].hashrate,
                 workerCount: stats.pools[pool].workerCount,
-                minerCount: stats.pools[pool].workerCount,
+                minerCount: stats.pools[pool].minerCount,
                 blocks: stats.pools[pool].blocks,
                 networkDiff:stats.pools[pool].poolStats.networkDiff,
                 networkSols:stats.pools[pool].poolStats.networkSols

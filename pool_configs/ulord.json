@@ -2,7 +2,7 @@
     "enabled": true,
     "coin": "ulord.json",
 
-    "address": "UQahakKqv1yPD6r7kZ1kXidRxmNfd3XrKA",
+    "address": "uZoRYXBv7bznqHwwtykFmZkz4kdnEu8HzD",
     "_comment_address": "pools ulord address; ex, UjKNeYth9s1QkW1N6ubSorfKPA9JvkC39D",
 
     "validateWorkerUsername": true,
@@ -34,9 +34,9 @@
         "maxBlocksPerPayment": 50,
         "daemon": {
             "host": "127.0.0.1",
-            "port": 9889,
-	    "user": "thgyrpc",
-	    "password": "Thgy@123456"
+            "port": 19889,
+	    "user": "upool",
+	    "password": "upool"
         }
     },
 
@@ -57,9 +57,9 @@
     "daemons": [
 	{   
             "host": "127.0.0.1",
-            "port": 9889,
-	    "user": "thgyrpc",
-	    "password": "Thgy@123456"
+            "port": 19889,
+	    "user": "upool",
+	    "password": "upool"
         }
     ],
 

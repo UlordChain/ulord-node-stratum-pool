@@ -334,7 +334,7 @@ var spawnPoolWorkers = function(){
                     case 'BROAD':
                     Object.keys(cluster.workers).forEach(function(id) {
                         if (cluster.workers[id].type === 'pool'){
-                            cluster.workers[id].send({type: 'DROPBLOCK', rpcData:message.rpcData});
+                            cluster.workers[id].send({type: 'DROPBLOCK', rpcData:msg.rpcData});
                         }
                     });
                     break;
