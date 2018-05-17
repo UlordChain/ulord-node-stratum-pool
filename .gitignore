@@ -3,6 +3,7 @@ node_modules/
 config.json
 #pool_configs/*.json
 !pool_configs/zclassic_example.json
-logs/
+logs/*.log
 *.log
 package-lock.json
+testp
