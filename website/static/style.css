@@ -137,10 +137,10 @@ footer iframe {
 
 .home {
     content: '';
-    width: 120px;
+    width: 133px;
     height: 70px;
     background: url(logo_white.png) no-repeat left center;
-    background-size: 50px;
+    background-size: 133px;
     display: inline-block;
 }
 
