@@ -141,10 +141,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
             clearInterval(paymentInterval);
         }
 		 paymentInterval = setInterval(function(){
-            var currentDate = new Date();
-            if(currentDate.getHours()==0&&currentDate.getMinutes()==0){
                 processPayments();
-            }
         }, paymentIntervalSecs * 1000);
         setupFinished(true);
     }
@@ -714,9 +711,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     }
 
                     var addressAccount = "";
-                    util.logToFile("workers: " + JSON.stringify(workers) + '\n', 'paymentDebug.log');
-                    util.logToFile("rounds: " + JSON.stringify(rounds) + '\n', 'paymentDebug.log');
-                    util.logToFile("txDetails: " + JSON.stringify(txDetails) + '\n', 'paymentDebug.log');
                     //	console.log("txDetails: " +  JSON.stringify(txDetails[0].result));
                     //    console.log("length of txDetails: " + JSON.stringify(txDetails.length));
 
@@ -808,8 +802,8 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                                 // if over maxBlocksPerPayment...
                                 // change category to immature to prevent payment
                                 // and to keep track of confirmations/immature balances
-                             //   if (payingBlocks > maxBlocksPerPayment)
-                             //       r.category = 'immature';
+                                //if (payingBlocks > maxBlocksPerPayment)
+                                //    r.category = 'immature';
                                 return true;
                             default:
                                 return false;
@@ -1161,8 +1155,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     for (var a in addressAmounts) {
                         addressAmounts[a] = coinsRound(addressAmounts[a]);
                     }
-                    console.log('Emit transaction');
-                    util.logToFile("addressAmounts "+processFlag+": " + JSON.stringify(addressAmounts));
                     //reserve bills to db
                     var commandArray = [];
                     sendBillsToDB(addressAmounts);
@@ -1412,7 +1404,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                             // it worked, congrats on your pools payout ;)
                             // logger.special(logSystem, logComponent, 'Sent ' + satoshisToCoins(totalSent)
                             //     + ' to ' + Object.keys(payTrack).length + ' miners; txid: ' + txid);
-                            util.logToFile("payTrack "+processFlag+": " + JSON.stringify(payTrack));
                             var payData = {time: Date.now(), txid: txid, payAmounts: payTrack};
                             var commandPayedBills = ['zadd', 'ulord:payedBills', Date.now(), JSON.stringify(payData)];
                             var commandBills = []
