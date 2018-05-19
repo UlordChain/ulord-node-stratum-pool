@@ -327,7 +327,6 @@ app.all('*',function (req, res, next) {
 
     app.use(compress());
     app.use('/static', express.static('website/static'));
-
     app.use(function(err, req, res, next){
         console.error(err.stack);
         res.send(500, 'Something broke!');
