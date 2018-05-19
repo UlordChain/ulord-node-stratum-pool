@@ -140,11 +140,8 @@ function SetupForPool(logger, poolOptions, setupFinished) {
         if (paymentInterval) {
             clearInterval(paymentInterval);
         }
-		 paymentInterval = setInterval(function(){
-            var currentDate = new Date();
-            if(currentDate.getHours()==8&&currentDate.getMinutes()==0){
+	 paymentInterval = setInterval(function(){
                 processPayments();
-            }
         }, paymentIntervalSecs * 1000);
         setupFinished(true);
     }
