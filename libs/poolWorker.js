@@ -101,6 +101,13 @@ module.exports = function(logger){
 				     }
 		        }
 				break;
+				case "BLACKCALC":
+				     for(var i in pools){
+				          if(pools[i].stratumServer){
+				                pools[i].stratumServer.startDig(message.miner);
+				          }
+				     }
+				break;
 				
         }
     });

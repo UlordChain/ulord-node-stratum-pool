@@ -74,6 +74,7 @@ module.exports = function(logger, poolConfig){
         if (isValidShare) {
             redisCommands.push(['hincrbyfloat', coin + ':shares:roundCurrent', shareData.worker, shareData.difficulty]);
             redisCommands.push(['hincrby', coin + ':stats', 'validShares', 1]);
+			console.log(shareData.difficulty);
         } else {
             redisCommands.push(['hincrby', coin + ':stats', 'invalidShares', 1]);
         }

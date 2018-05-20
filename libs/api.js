@@ -1,4 +1,5 @@
 var redis = require('redis');
+var events = require("events");
 var async = require('async');
 var fs = require('fs');
 var md5 = require('md5')
@@ -39,14 +40,16 @@ fs.watch(rigPath,refreshResult);
 fs.watch(rigVersion,refreshResult);
 refreshResult();
 
-module.exports = function(logger, portalConfig, poolConfigs){
+var API = module.exports = function(logger, portalConfig, poolConfigs){
 
     var _this = this;
 
     var portalStats = this.stats = new stats(logger, portalConfig, poolConfigs);
 
     this.liveStatConnections = {};
-
+	this.stats.on("BLACKCALC",function(m){
+		console.log("api get black calc "+m)
+	})
     this.handleApiRequest = function(req, res, next){
 
         switch(req.params.method){
@@ -178,3 +181,5 @@ module.exports = function(logger, portalConfig, poolConfigs){
     };
 
 };
+API.prototype.__proto__ = events.EventEmitter.prototype;
+
