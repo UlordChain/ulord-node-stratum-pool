@@ -711,9 +711,6 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     }
 
                     var addressAccount = "";
-                    util.logToFile("workers: " + JSON.stringify(workers) + '\n', 'paymentDebug.log');
-                    util.logToFile("rounds: " + JSON.stringify(rounds) + '\n', 'paymentDebug.log');
-                    util.logToFile("txDetails: " + JSON.stringify(txDetails) + '\n', 'paymentDebug.log');
                     //	console.log("txDetails: " +  JSON.stringify(txDetails[0].result));
                     //    console.log("length of txDetails: " + JSON.stringify(txDetails.length));
 

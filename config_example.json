@@ -25,6 +25,9 @@
         "emitInvalidBlockHashes": false,
         "validateWorkerUsername": true,
         "tcpProxyProtocol": false,
+		"security":{
+			"rejectBlackCalc":false
+		},
         "banning": {
             "enabled": true,
             "time": 600,

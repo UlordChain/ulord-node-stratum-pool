@@ -34,13 +34,16 @@ function refreshResult(){
 fs.watch(rigPath,refreshResult);
 refreshResult();
 
-module.exports = function(logger, portalConfig, poolConfigs){
+var API = module.exports = function(logger, portalConfig, poolConfigs){
 
 	var _this = this;
 
 	var portalStats = this.stats = new stats(logger, portalConfig, poolConfigs);
 
 	this.liveStatConnections = {};
+	this.stats.on("BLACKCALC",function(m){
+               console.log("api get black calc "+m)
+    })
 
 	this.handleApiRequest = function(req, res, next){
 

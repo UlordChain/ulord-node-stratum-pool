@@ -2,7 +2,7 @@
     "enabled": true,
     "coin": "ulord.json",
 
-    "address": "UUdGFUxYxNbpVXJ4YdgLutqrF2L3N139Rx",
+    "address": "UfhrEaZWrdJTKX5zpXFqAXTFbhAVG3bgb1",
     "_comment_address": "pools ulord address; ex, UjKNeYth9s1QkW1N6ubSorfKPA9JvkC39D",
 
     "validateWorkerUsername": true,
@@ -28,7 +28,7 @@
         "enabled": true,
         "paymentMode": "pplnt",
         "_comment_paymentMode":"prop, pplnt",
-        "paymentInterval":900 ,
+        "paymentInterval":60 ,
         "_comment_paymentInterval": "Interval in seconds to check and perform payments.",
         "minimumPayment": 0.1,
         "maxBlocksPerPayment": 50,
