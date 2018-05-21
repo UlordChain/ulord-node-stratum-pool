@@ -113,12 +113,6 @@ $(function(){
                 $('.faqA10').text(answer10);
                 $('.faqQ11').text(question11);
                 $('.faqA11').text(answer11);
-                $('.faqQ12').text(question12);
-                $('.faqA12').text(answer12);
-                $('.faqQ13').text(question13);
-                $('.faqA13').text(answer13);
-                $('.faqQ14').text(question14);
-                $('.faqA14').text(answer14);
                 $('.faqEnd').text(QAEnd);
             }
             var language
