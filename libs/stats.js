@@ -677,7 +677,7 @@ var STATS = module.exports = function(logger, portalConfig, poolConfigs){
 				// sort workers by name
 				coinStats.workers = sortWorkersByName(coinStats.workers);
                 for(var w in coinStats.workers){
-                    if(coinStats.workers[w].hashrate>500){
+                    if(coinStats.workers[w].hashrate>100000){
                         console.log("find out big calc,watching "+w);
                                 process.send({
                                      type:"BLACKCALC",

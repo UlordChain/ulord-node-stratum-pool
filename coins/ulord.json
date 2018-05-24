@@ -2,6 +2,6 @@
     "name": "Ulord",
     "symbol": "UT",
     "algorithm": "cryptohello",
-    "txfee": 0.000005
+    "txfee": 0.0004
 }
 

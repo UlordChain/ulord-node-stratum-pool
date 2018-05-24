@@ -2,18 +2,18 @@
     "enabled": true,
     "coin": "ulord.json",
 
-    "address": "UfhrEaZWrdJTKX5zpXFqAXTFbhAVG3bgb1",
-    "_comment_address": "pools ulord address; ex, UjKNeYth9s1QkW1N6ubSorfKPA9JvkC39D",
+    "address": "UYcTCmnGDonF4CYBjww6mNsk9MvnG1gEq6",
+    "_comment_address": "pools ulord address; ex, uKnfDsCBvFAc8jKXESqVTj18UHPNaHa6UN",
 
     "validateWorkerUsername": true,
 
-    "invalidAddress": "uhpm1PFGb56G3aZxF4feueab98kQcbLixk",
+    "invalidAddress": "uLRExFVpHgzj2jtA28CqiLfrd6VGxBSaNf",
 
     "walletInterval": 1,
     "_comment_walletInterval": "Used to cache komodo coin stats, shielding not performed.",
 
     "rewardRecipients": {
-        "uVvfixZ1rAXx7ktFCNuRgHrU5yWoDNurEy": 1.0
+	"Ue9RwtcKguV8izxkj9cpDvrazQ63hTBZcd":1.0
     },
 
     "tlsOptions": {
@@ -28,22 +28,33 @@
         "enabled": true,
         "paymentMode": "pplnt",
         "_comment_paymentMode":"prop, pplnt",
-        "paymentInterval":60 ,
+        "paymentInterval": 180,
         "_comment_paymentInterval": "Interval in seconds to check and perform payments.",
         "minimumPayment": 0.1,
-        "maxBlocksPerPayment": 50,
+        "maxBlocksPerPayment": 500,
         "daemon": {
             "host": "127.0.0.1",
             "port": 9889,
-	    "user": "thgyrpc",
-	    "password": "Thgy@123456"
+            "user": "thgyrpc",
+            "password": "Thgy@123456"
         }
     },
 
     "ports": {
-        "7100": {
+        "18888": {
             "tls":false,
-            "diff": 0.05,
+            "diff": 0.2,
+            "varDiff": {
+                "minDiff": 0.04,
+                "maxDiff": 16,
+                "targetTime": 15,
+                "retargetTime": 60,
+                "variancePercent": 30
+            }
+        },
+	"17777": {
+            "tls":false,
+            "diff": 0.2,
             "varDiff": {
                 "minDiff": 0.04,
                 "maxDiff": 16,
@@ -52,14 +63,15 @@
                 "variancePercent": 30
             }
         }
+
     },
 
     "daemons": [
 	{   
             "host": "127.0.0.1",
             "port": 9889,
-	    "user": "thgyrpc",
-	    "password": "Thgy@123456"
+            "user": "thgyrpc",
+            "password": "Thgy@123456"
         }
     ],
 
