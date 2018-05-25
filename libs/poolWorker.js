@@ -92,23 +92,23 @@ module.exports = function(logger){
 
                 }
                 break;
-				case 'DROPBLOCK':
-				if(process.env.forkId!==0){
-				     for(var i in pools){
-				          if(pools[i].jobManager && pools[i].jobManager.processTemplate){
-				                pools[i].jobManager.processTemplate(message.rpcData);
-				          }
-				     }
-		        }
-				break;
+                case 'DROPBLOCK':
+                if(process.env.forkId!==0){
+					for(var i in pools){
+						if(pools[i].jobManager && pools[i].jobManager.processTemplate){
+                    		pools[i].jobManager.processTemplate(message.rpcData);
+						}
+					}
+                }
+                break;
 				case "BLACKCALC":
-				     for(var i in pools){
-				          if(pools[i].stratumServer){
-				                pools[i].stratumServer.startDig(message.miner);
-				          }
-				     }
-				break;
-				
+                                    for(var i in pools){
+                                         if(pools[i].stratumServer){
+                                               pools[i].stratumServer.startDig(message.miner);
+                                         }
+                                    }
+                break;
+
         }
     });
 
@@ -153,12 +153,13 @@ module.exports = function(logger){
                 if (poolOptions.validateWorkerUsername !== true)
                     authCallback(true);
                 else {
-                        pool.daemon.cmd('validateaddress', [String(workerName).split(".")[0]], function (results) {
+			pool.daemon.cmd('validateaddress', [String(workerName).split(".")[0]], function (results) {
                             var isValid = results.filter(function (r) {
                                 return r.response.isvalid
                             }).length > 0;
                             authCallback(isValid);
-                        });
+                        });	
+
                     }
             };
 
@@ -181,6 +182,7 @@ module.exports = function(logger){
 			
             });
         };
+
 
         var pool = Stratum.createPool(poolOptions, authorizeFN, logger);
         pool.on('share', function(isValidShare, isValidBlock, data){
@@ -221,7 +223,8 @@ module.exports = function(logger){
             _this.setDifficultyForProxyPort(pool, poolOptions.coin.name, poolOptions.coin.algorithm);
         }).on('BROAD',function(result){
             process.send({type:"BROAD",rpcData:result});
-		});
+        });
+
         pool.start();
         pools[poolOptions.coin.name] = pool;
     });

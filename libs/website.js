@@ -114,8 +114,7 @@ module.exports = function(logger){
     var buildUpdatedWebsite = function(){
         portalStats.getGlobalStats(function(){
             processTemplates();
-
-            var statData = 'data: ' + JSON.stringify(portalStats.stats) + '\n\n';
+            var statData = 'data: Stats refreshed notified\n\n';
             for (var uid in portalApi.liveStatConnections){
                 var res = portalApi.liveStatConnections[uid];
                 res.write(statData);
@@ -165,9 +164,11 @@ module.exports = function(logger){
                     var daemon = new Stratum.daemon.interface([coinInfo.daemon], function(severity, message){
                         logger[severity](logSystem, c, message);
                     });
+		console.log("address:  "+coinInfo.address)
                     daemon.cmd('dumpprivkey', [coinInfo.address], function(result){
                         if (result[0].error){
                             logger.error(logSystem, c, 'Could not dumpprivkey for ' + c + ' ' + JSON.stringify(result[0].error));
+				
                             cback();
                             return;
                         }
@@ -328,7 +329,6 @@ app.all('*',function (req, res, next) {
 
     app.use(compress());
     app.use('/static', express.static('website/static'));
-
     app.use(function(err, req, res, next){
         console.error(err.stack);
         res.send(500, 'Something broke!');
@@ -346,7 +346,7 @@ app.all('*',function (req, res, next) {
             });        
         } else {
           app.listen(portalConfig.website.port, portalConfig.website.host, function () {
-            logger.debug(logSystem, 'Server', 'Website started on ' + portalConfig.website.host + ':' + portalConfig.website.port);
+            logger.debug(logSystem, 'Server', 'Website thread '+ process.env.threadNum + 'started on ' + portalConfig.website.host + ':' + portalConfig.website.port);
           });
         }
     }
