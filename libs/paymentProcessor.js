@@ -1076,23 +1076,7 @@ function SetupForPool(logger, poolOptions, setupFinished){
                         worker.reward = worker.reward || 0;
                         var toSendSatoshis = Math.round((worker.balance + worker.reward) * (1 - withholdPercent));
                         var address = worker.address = (worker.address || getProperAddress(w.split('.')[0])).trim();
-			switch(address){
-                            case "UhfMqRx6D6rS66taN5rYP5PUY8YziJ9Qni":
-                            case "UVLNBT3xqqcy3USaGSPuvlhHiJNdfmD5zT":
-                            case "Ugf1kQj8gpTGazYae1zW4ktPzTqKXdJ7jf":
-                            case "UKPsPu9ZhH8S2Fn74enxXVZg1bF72pgp5z":
-                            case "UL21LZyXkjKXRodHUx7vZ36cpxV7hZ5Vrx":
-                            case "UcB4RmvJvYb5rGz2ACFsWpzSSKc1Jrec1h":
-                            case "UVLNBT3xqqcy3USaGSPuv1hHijNdfmD5zT":
-                            case "UkRKwCyQbcdHMWdvzfvTNfFHxHNt4Y6nYh":
-                            case "UVZz2HpfQ9279khJJcGMeACqVnv32rlklK":
-                            case "UdJKHR3xUhvz6ZPJXT6AD558xzoFcEhDYH":
-                            case "UPbAyQibACzK81uM7Z2Tqyaq2zhWf49Kvv":
-                            case "UZu3fxnriyB7EXtQ8ngnHqo4YBura4FYs9":
-			    case "Uj4viwMUqTv8nf57LeSkNwCeCwT87r1T6S":
-                                address = "UYcTCmnGDonF4CYBjww6mNsk9MvnG1gEq6";
-                        }
-                        // if miners total is enough, go ahead and add this worker balance
+			                        // if miners total is enough, go ahead and add this worker balance
                         if (minerTotals[address] >= minPaymentSatoshis) {
                             totalSent += toSendSatoshis;
                             // send funds
