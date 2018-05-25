@@ -141,7 +141,7 @@ var buildPoolConfigs = function(){
         var coinProfile = JSON.parse(JSON.minify(fs.readFileSync(coinFilePath, {encoding: 'utf8'})));
         poolOptions.coin = coinProfile;
         poolOptions.coin.name = poolOptions.coin.name.toLowerCase();
-        poolOptions.coin.poolId = poolOptions.coin.poolId || os.hostname.split('-').slice(-1)[0];
+        poolOptions.coin.poolId = poolOptions.coin.poolId || os.hostname().split('-').slice(-1)[0];
         logger.debug('Master', poolOptions.coinFileName, JSON.stringify(poolOptions.coin));
 
         if (poolOptions.coin.name in configs){
