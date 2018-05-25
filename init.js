@@ -286,7 +286,7 @@ var spawnPoolWorkers = function(){
                         if (!_lastShareTimes[msg.coin][workerAddress] || !_lastStartTimes[msg.coin][workerAddress]) {
                             _lastShareTimes[msg.coin][workerAddress] = now;
                             _lastStartTimes[msg.coin][workerAddress] = now;
-                            logger.debug('PPLNT', msg.coin, 'Thread ' + msg.thread, 'PoolId ' + poolConfigs[msg.coin].poolId, workerAddress + ' joined.');
+                            logger.debug('PPLNT', msg.coin, 'Thread ' + msg.thread + ' PoolId ' + poolConfigs[msg.coin].poolId, workerAddress + ' joined.');
                         }
                         // grab last times from memory objects
                         if (_lastShareTimes[msg.coin][workerAddress] != null && _lastShareTimes[msg.coin][workerAddress] > 0) {
