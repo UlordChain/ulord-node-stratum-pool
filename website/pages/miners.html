@@ -157,10 +157,10 @@ $(document).ready(function(){
 
 </div>
 <script>
-    var payData = {{=JSON.stringify(it.stats.pools.ulord.workers)}};
+    var payData = {{=JSON.stringify(it)}};
     var data = JSON.parse(JSON.stringify(payData));
     var workderNum = [];
-    for(var worker in data) {
+    for(var worker in data.stats.pools.ulord.workers) {
         var name = worker.split('.')[0];
         // console.log(name);
         if(!workderNum[name]) {
