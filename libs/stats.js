@@ -646,8 +646,8 @@ var STATS = module.exports = function(logger, portalConfig, poolConfigs){
                         _maxTimeShare = time;
                     
                     var miner = worker.split(".")[0];
-                    if (miner in coinStats.miners) {
-                        coinStats.miners[miner].currRoundTime += parseFloat(coinStats.currentRoundTimes[worker]);
+                    if (miner in coinStats.miners && coinStats.miners[miner].currRoundTime < time) {
+                        coinStats.miners[miner].currRoundTime = time;
                     }
                 }
 
@@ -663,6 +663,10 @@ var STATS = module.exports = function(logger, portalConfig, poolConfigs){
 					coinStats.workers[worker].hashrate = _workerRate;
 					coinStats.workers[worker].hashrateString = _this.getReadableHashRateString(_workerRate);
                                         //console.log('111');
+                    var miner = worker.split('.')[0];
+                    if (miner in coinStats.miners) {
+                        coinStats.workers[worker].currRoundTime = coinStats.miners[miner].currRoundTime;
+                    }
                 }
 				for (var miner in coinStats.miners) {
                                         //console.log('222');
