@@ -8,7 +8,7 @@ Usage
 
 
 #### Requirements
-* Coin daemon(s) (find the coin's repo and build latest version from source)
+* [Coin daemon](https://github.com/UlordChain/UlordChain)(find the coin's repo and build latest version from source)
 * [Node.js](http://nodejs.org/) v4.8.7 ([follow these installation instructions](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager))
 * [Redis](http://redis.io/) key-value store v2.6+ ([follow these instructions](http://redis.io/topics/quickstart))
 
@@ -32,7 +32,7 @@ txindex=1
 addressindex=1
 spentindex=1
 timestampindex=1
-reindex=1
+reindex=0
 ```
 
 #### 1) Downloading & Installing
