@@ -500,7 +500,17 @@ var startWebsite = function(){
         setTimeout(function(){
             startWebsite(portalConfig, poolConfigs);
         }, 2000);
-    });
+    }).on("message",function(msg){
+		switch(msg.type){
+			case 'BLACKCALC':
+			Object.keys(cluster.workers).forEach(function(id) {
+                if (cluster.workers[id].type === 'pool'){
+                    cluster.workers[id].send({type: 'BLACKCALC', miner:msg.miner});
+                  }
+            });
+			break;
+		}
+	});
 };
 
 

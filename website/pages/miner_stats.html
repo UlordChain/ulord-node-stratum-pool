@@ -210,24 +210,23 @@
             second = second < 10 ? ('0' + second) : second;
             return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
         };
-
-        var poolData = {{=JSON.stringify(it.stats.pools)}};
-        var statAdd = {{=JSON.stringify(it.stats.address)}};
+		poolPaymentsData = {{=JSON.stringify(it.stats.pools.ulord.payments)}};
+        statAdd = {{=JSON.stringify(it.stats.address)}};
         var minerStats = '';
-        for (var pool in poolData ) {
-            for (var p in poolData[pool].bills) {
-                var paid = poolData[pool].bills[p].payAmounts[statAdd.split(".")[0]];
+            for (var i=0;i<poolPaymentsData.length;i++) {
+                var paid = poolPaymentsData[i].amounts[statAdd.split(".")[0]];
                 if (paid !== undefined){
+                    
                     minerStats += '<tr>'+
-                        '<td>' + formatDateTime(poolData[pool].bills[p].time)+ '</td>' +
+                        '<td><a href="https://explorer.ulord.one/tx/'+ poolPaymentsData[i].txid +'" target="_blank">'+ poolPaymentsData[i].txid +'</a></td>' +
                        /* '<td>' + Math.round(poolData[pool].payments[p].shares)+ '</td>' +*/
-                        '<td>'+ poolData[pool].bills[p].payAmounts[statAdd.split(".")[0]] +' '+ poolData[pool].symbol +'</td>' +
-                        '<td><a href="http://testnet-explorer.ulord.one/tx/'+ poolData[pool].bills[p].txid +'" target="_blank">'+ poolData[pool].bills[p].txid +'</a></td>' +
+                        '<td>'+ poolPaymentsData[i].amounts[statAdd.split(".")[0]] +' UT</td>' +
+                        '<td>' + formatDateTime(poolPaymentsData[i].time)+ '</td>' +
                         ' </tr>'
-				}
-			}
+                }
+            }
             $('#statsTable tbody').html(minerStats);
-		}
+
     });
 
 </script>

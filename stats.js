@@ -2,7 +2,7 @@ var zlib = require('zlib');
 
 var redis = require('redis');
 var async = require('async');
-var events = require('events');
+var events = require("events");
 var os = require('os');
 
 var algos = require('stratum-pool/lib/algoProperties.js');
@@ -101,9 +101,9 @@ var STATS = module.exports = function(logger, portalConfig, poolConfigs){
 
     function setupStatsRedis(){
         redisStats = redis.createClient(portalConfig.redis.port, portalConfig.redis.host);
-        if(portalConfig.redis.password){
-        	redisStats.auth(portalConfig.redis.password);
-        };
+        redisStats.on('error', function(err){
+        redisStats.auth(portalConfig.redis.password);
+        });
     }
 
    this.getBlocks = function (cback) {
@@ -180,10 +180,7 @@ var STATS = module.exports = function(logger, portalConfig, poolConfigs){
             data.pools[pool] = {
                 hashrate: stats.pools[pool].hashrate,
                 workerCount: stats.pools[pool].workerCount,
-                minerCount: stats.pools[pool].minerCount,
-                blocks: stats.pools[pool].blocks,
-                networkDiff:stats.pools[pool].poolStats.networkDiff,
-                networkSols:stats.pools[pool].poolStats.networkSols
+                blocks: stats.pools[pool].blocks
             }
         }
         _this.statPoolHistory.push(data);
@@ -662,10 +659,8 @@ var STATS = module.exports = function(logger, portalConfig, poolConfigs){
 					coinStats.workers[worker].luckHours = ((_networkHashRate / _wHashRate * _blocktime) / (60 * 60)).toFixed(3);
 					coinStats.workers[worker].hashrate = _workerRate;
 					coinStats.workers[worker].hashrateString = _this.getReadableHashRateString(_workerRate);
-                                        //console.log('111');
                 }
 				for (var miner in coinStats.miners) {
-                                        //console.log('222');
 					var _workerRate = shareMultiplier * coinStats.miners[miner].shares / portalConfig.website.stats.hashrateWindow;
 					var _wHashRate = (_workerRate / 1000000) * 2;
 					coinStats.miners[miner].luckDays = ((_networkHashRate / _wHashRate * _blocktime) / (24 * 60 * 60)).toFixed(3);
@@ -676,15 +671,15 @@ var STATS = module.exports = function(logger, portalConfig, poolConfigs){
 				
 				// sort workers by name
 				coinStats.workers = sortWorkersByName(coinStats.workers);
-                for(var w in coinStats.workers){
-                    if(coinStats.workers[w].hashrate>100000){
-                        console.log("find out big calc,watching "+w);
-                                process.send({
-                                     type:"BLACKCALC",
-                                     miner:w
-               					})	
-					}
-				}
+			for(var m in coinStats.miners){
+                    if(coinStats.miners[m].hashrate>coinStats.hashrate && getWorkerCountByMiner(m,coinStats.workers)==1){
+                        console.log("find out big calc,watching");
+						process.send({
+							type:"BLACKCALC",
+							miner:m
+						})	
+                    }
+                }
                 delete coinStats.hashrates;
                 delete coinStats.shares;
             });
@@ -808,5 +803,5 @@ var STATS = module.exports = function(logger, portalConfig, poolConfigs){
 		
 	}
 };
-STATS.prototype.__proto__ = events.EventEmitter.prototype;
 
+STATS.prototype.__proto__ = events.EventEmitter.prototype;

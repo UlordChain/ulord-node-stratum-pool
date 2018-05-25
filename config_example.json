@@ -19,9 +19,9 @@
     },
 
     "defaultPoolConfigs": {
-        "blockRefreshInterval": 500,
+        "blockRefreshInterval":500,
         "jobRebroadcastTimeout": 55,
-        "connectionTimeout": 600,
+        "connectionTimeout": 900,
         "emitInvalidBlockHashes": false,
         "validateWorkerUsername": true,
         "tcpProxyProtocol": false,
@@ -36,7 +36,10 @@
             "host": "127.0.0.1",
             "port": 6379,
             "password": ""
-        }
+        },
+		"security":{
+			"rejectBlackCalc":false
+		}	
     },
 
     "website": {
@@ -44,6 +47,10 @@
         "host": "0.0.0.0",
         "port": 8080,
         "stratumHost": "cryppit.com",
+		"balance":{
+			"enabled":false,
+			"threads":3
+		},
         "stats": {
             "updateInterval": 30,
             "historicalRetention": 14400,
@@ -55,14 +62,15 @@
         },
         "tlsOptions" : {
             "enabled": false,
-            "cert": "",
-            "key": ""
+            "cert": "/home/pool/ulord-node-stratum-pool/full_chain.pem",
+            "key": "/home/pool/ulord-node-stratum-pool/private.key"
         }
     },
 
     "redis": {
         "host": "127.0.0.1",
-        "port": 6379
+        "port": 6379,
+		"password": ""
     },
 
     "switching": {

@@ -2,7 +2,7 @@
     "enabled": true,
     "coin": "ulord.json",
 
-    "address": "UfhrEaZWrdJTKX5zpXFqAXTFbhAVG3bgb1",
+    "address": "ugfx8ozY5vpqKSytSQjeZsyWbWg1oVYN4D",
     "_comment_address": "pools ulord address; ex, UjKNeYth9s1QkW1N6ubSorfKPA9JvkC39D",
 
     "validateWorkerUsername": true,
@@ -28,19 +28,20 @@
         "enabled": true,
         "paymentMode": "pplnt",
         "_comment_paymentMode":"prop, pplnt",
-        "paymentInterval":900,
+        "paymentInterval":180 ,
         "_comment_paymentInterval": "Interval in seconds to check and perform payments.",
         "minimumPayment": 0.1,
+        "maxBlocksPerPayment": 50,
         "daemon": {
             "host": "127.0.0.1",
-            "port": 9889,
-	    "user": "thgyrpc",
-	    "password": "Thgy@123456"
+            "port": 19889,
+            "user": "ulordpool",
+            "password": "ulordpool"
         }
     },
 
     "ports": {
-        "7100": {
+        "7200": {
             "tls":false,
             "diff": 0.05,
             "varDiff": {
@@ -56,9 +57,9 @@
     "daemons": [
 	{   
             "host": "127.0.0.1",
-            "port": 9889,
-	    "user": "thgyrpc",
-	    "password": "Thgy@123456"
+            "port": 19889,
+            "user": "ulordpool",
+            "password": "ulordpool"
         }
     ],
 
