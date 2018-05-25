@@ -218,10 +218,10 @@
                 if (paid !== undefined){
                     
                     minerStats += '<tr>'+
-                        '<td><a href="https://explorer.ulord.one/tx/'+ poolPaymentsData[i].txid +'" target="_blank">'+ poolPaymentsData[i].txid +'</a></td>' +
+                        '<td>' + formatDateTime(poolPaymentsData[i].time)+ '</td>' +
                        /* '<td>' + Math.round(poolData[pool].payments[p].shares)+ '</td>' +*/
                         '<td>'+ poolPaymentsData[i].amounts[statAdd.split(".")[0]] +' UT</td>' +
-                        '<td>' + formatDateTime(poolPaymentsData[i].time)+ '</td>' +
+                        '<td><a href="https://explorer.ulord.one/tx/'+ poolPaymentsData[i].txid +'" target="_blank">'+ poolPaymentsData[i].txid +'</a></td>' +
                         ' </tr>'
                 }
             }
