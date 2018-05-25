@@ -141,6 +141,8 @@ var buildPoolConfigs = function(){
         var coinProfile = JSON.parse(JSON.minify(fs.readFileSync(coinFilePath, {encoding: 'utf8'})));
         poolOptions.coin = coinProfile;
         poolOptions.coin.name = poolOptions.coin.name.toLowerCase();
+        poolOptions.coin.poolId = poolOptions.coin.poolId || os.hostname.split('-').slice(-1)[0];
+        logger.debug('Master', poolOptions.coinFileName, JSON.stringify(poolOptions.coin));
 
         if (poolOptions.coin.name in configs){
 
@@ -296,7 +298,7 @@ var spawnPoolWorkers = function(){
                         //var timeChangeTotal = roundTo(Math.max(now - lastStartTime, 0) / 1000, 4);
                         if (timeChangeSec < 900) {
                         // loyal miner keeps mining :)
-                        redisCommands.push(['hincrbyfloat', msg.coin + ':shares:timesCurrent', workerAddress, timeChangeSec]);
+                        redisCommands.push(['hincrbyfloat', msg.coin + ':shares:timesCurrent', workerAddress + "." + poolConfigs[msg.coin].poolId, timeChangeSec]);     
                         //logger.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+':{totalTimeSec:'+timeChangeTotal+', timeChangeSec:'+timeChangeSec+'}');
                         
                         if(Date.now() - lastShareSubmitTime >= 1000) {
