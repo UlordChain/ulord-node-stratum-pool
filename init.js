@@ -100,6 +100,8 @@ var buildPoolConfigs = function(){
         var poolOptions = JSON.parse(JSON.minify(fs.readFileSync(configDir + file, {encoding: 'utf8'})));
         if (!poolOptions.enabled) return;
         poolOptions.fileName = file;
+        poolOptions.poolId = poolOptions.poolId || os.hostname().split('-').slice(-1)[0];
+        logger.debug('Master', poolOptions.coinFileName, JSON.stringify(poolOptions));
         poolConfigFiles.push(poolOptions);
     });
 
@@ -141,8 +143,7 @@ var buildPoolConfigs = function(){
         var coinProfile = JSON.parse(JSON.minify(fs.readFileSync(coinFilePath, {encoding: 'utf8'})));
         poolOptions.coin = coinProfile;
         poolOptions.coin.name = poolOptions.coin.name.toLowerCase();
-        poolOptions.coin.poolId = poolOptions.coin.poolId || os.hostname.split('-').slice(-1)[0];
-        logger.debug('Master', poolOptions.coinFileName, JSON.stringify(poolOptions.coin));
+        
 
         if (poolOptions.coin.name in configs){
 
@@ -285,7 +286,7 @@ var spawnPoolWorkers = function(){
                         if (!_lastShareTimes[msg.coin][workerAddress] || !_lastStartTimes[msg.coin][workerAddress]) {
                             _lastShareTimes[msg.coin][workerAddress] = now;
                             _lastStartTimes[msg.coin][workerAddress] = now;
-                            logger.debug('PPLNT', msg.coin, 'Thread '+msg.thread, workerAddress+' joined.');
+                            logger.debug('PPLNT', msg.coin, 'Thread ' + msg.thread + ' PoolId ' + poolConfigs[msg.coin].poolId, workerAddress + ' joined.');
                         }
                         // grab last times from memory objects
                         if (_lastShareTimes[msg.coin][workerAddress] != null && _lastShareTimes[msg.coin][workerAddress] > 0) {
