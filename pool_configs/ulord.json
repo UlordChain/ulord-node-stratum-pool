@@ -2,18 +2,18 @@
     "enabled": true,
     "coin": "ulord.json",
 
-    "address": "ugfx8ozY5vpqKSytSQjeZsyWbWg1oVYN4D",
+    "address": "Ugfx8ozY5vpqKSytSQjeZsyWbWg1oVYN4D",
     "_comment_address": "pools ulord address; ex, UjKNeYth9s1QkW1N6ubSorfKPA9JvkC39D",
 
     "validateWorkerUsername": true,
 
-    "invalidAddress": "uhpm1PFGb56G3aZxF4feueab98kQcbLixk",
+    "invalidAddress": "Uhpm1PFGb56G3aZxF4feueab98kQcbLixk",
 
     "walletInterval": 1,
     "_comment_walletInterval": "Used to cache komodo coin stats, shielding not performed.",
 
     "rewardRecipients": {
-        "uVvfixZ1rAXx7ktFCNuRgHrU5yWoDNurEy": 1.0
+        "UVvfixZ1rAXx7ktFCNuRgHrU5yWoDNurEy": 1.0
     },
 
     "tlsOptions": {
