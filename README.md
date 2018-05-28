@@ -33,6 +33,8 @@ addressindex=1
 spentindex=1
 timestampindex=1
 reindex=0
+maxconnections=9
+rpcworkqueue=140
 ```
 
 #### 1) Downloading & Installing
