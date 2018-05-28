@@ -226,6 +226,8 @@ var spawnPoolWorkers = function(){
             return 1;
         if (portalConfig.clustering.forks === 'auto')
             return os.cpus().length;
+        if (!isNaN(portalConfig.clustering.forks))
+            return portalConfig.clustering.forks;
         if (!portalConfig.clustering.forks || isNaN(portalConfig.clustering.forks))
             return 1;
         return portalConfig.clustering.forks;

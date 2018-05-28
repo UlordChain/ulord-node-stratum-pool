@@ -15,7 +15,7 @@
 
     "clustering": {
         "enabled": true,
-        "forks": "auto"
+        "forks": 4
     },
 
     "defaultPoolConfigs": {
