@@ -141,7 +141,10 @@ function SetupForPool(logger, poolOptions, setupFinished){
             clearInterval(paymentInterval);
         }
         paymentInterval = setInterval(function(){
-            var scaleDate = new Date().setHours(0).setMinutes(0).setSeconds(0);
+            var scaleDate = new Date();
+	    scaleDate.setHours(0);
+            scaleDate.setMinutes(0);
+            scaleDate.setSeconds(0);
             var currentDate = new Date();
             if(((currentDate-scaleDate)/1000)%paymentIntervalSecs==0){
                 processPayments();
