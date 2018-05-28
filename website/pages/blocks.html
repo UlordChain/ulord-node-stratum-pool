@@ -152,34 +152,46 @@
             return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
         };
 
-        var poolData = {{=JSON.stringify(it.stats.pools)}};
         var blockHtml = '';
-        for (var pool in poolData) {
-            for (var b in poolData[pool].pending.blocks){
-                var block = poolData[pool].pending.blocks[b].split(":");
-                blockHtml +='<tr class="home-tr">' +
+        pendingBlock = {{=JSON.stringify(it.stats.pools.ulord.pending.blocks)}};
+        confirmedBlock = {{=JSON.stringify(it.stats.pools.ulord.confirmed.blocks)}};
+        mixedData = pendingBlock.concat(confirmedBlock);
+        var currentDate = new Date();
+        mixedData = mixedData.filter(function(e,i){
+            var dataTime = parseInt(e.split(":")[4]);
+            var payDate = new Date(dataTime);
+            return payDate.getDay() == currentDate.getDay()&&payDate.getFullYear() == currentDate.getFullYear()&&payDate.getMonth() == currentDate.getMonth();
+        })
+        mixedData.sort(function(a,b){
+            var aTime = a.split(":")[4];
+            var bTime = b.split(":")[4];
+            return bTime-aTime;
+        })
+        var luckDays = {{= it.stats.pools.ulord.luckDays}};
+        for(var i=0;i<mixedData.length;i++){
+            var block = mixedData[i].split(":");
+            blockHtml +='<tr class="home-tr">' +
                     '<td class="home-td td-block">' +
-                    '<a href="http://testnet-explorer.ulord.one/block/'+ block[0]+ '" target="_blank">' + block[2] +'</a>' +
+                    '<a href="https://explorer.ulord.one/block/'+ block[0]+ '" target="_blank">' + block[2] +'</a>' +
                     '</td>' +
                     '<td class="home-td td-hash">' +
-                    '<a href="http://testnet-explorer.ulord.one/block/'+ block[0] +'" target="_blank">' + block[0] +'</a>' +
+                    '<a href="https://explorer.ulord.one/block/'+ block[0] +'" target="_blank">' + block[0] +'</a>' +
                     '<label>'+ block[0] + '</label>' +
                     '</td>' +
                     '<td class="home-td td-time">' +
-                    '<small>'+ formatDateTime(block[4]=='x'?block[5]:block[4]) +'</small>' +
+                    '<small>'+ formatDateTime(block[4]) +'</small>' +
                     '</td>' +
                     '<td class="home-td td-luck">' +
                     '<div>' +
-                    '<span class="badge-green" id="statsLuckDays"'+ pool+'>'+ poolData[pool].luckDays +'</span>' +
+                    '<span class="badge-green" id="statsLuckDaysulord">'+luckDays +'</span>' +
                     '</div>' +
                     '</td>' +
                     '<td class="home-td td-miner">' +
                     '<a href="/miners/'+ block[3].split('.')[0] +'">'+ block[3] +'</a>' +
                     '</td>' +
                     '</tr> '
-            }
-            $('#blocksTable tbody').html(blockHtml);
         }
+        $('#blocksTable tbody').html(blockHtml);
 
     });
 
