@@ -64,8 +64,6 @@ function SetupForPool(logger, poolOptions, setupFinished){
         logger.warning(logSystem, logComponent, ' minimum paymentInterval of 120 seconds recommended.');
     }
     
-    var maxBlocksPerPayment =  Math.max(processingConfig.maxBlocksPerPayment || 3, 1);
-    
     // pplnt - pay per last N time shares
     var pplntEnabled = processingConfig.paymentMode === "pplnt" || false;
     var pplntTimeQualify = processingConfig.pplnt || 0.51; // 51%
@@ -77,7 +75,6 @@ function SetupForPool(logger, poolOptions, setupFinished){
     logger.debug(logSystem, logComponent, logComponent + ' requireShielding: ' + requireShielding);
     logger.debug(logSystem, logComponent, logComponent + ' minConf: ' + minConfShield);
     logger.debug(logSystem, logComponent, logComponent + ' payments txfee reserve: ' + fee);
-    logger.debug(logSystem, logComponent, logComponent + ' maxBlocksPerPayment: ' + maxBlocksPerPayment);
     logger.debug(logSystem, logComponent, logComponent + ' PPLNT: ' + pplntEnabled + ', time period: '+pplntTimeQualify);
 
     var daemon = new Stratum.daemon.interface([processingConfig.daemon], function(severity, message){
@@ -778,8 +775,6 @@ function SetupForPool(logger, poolOptions, setupFinished){
                                 // if over maxBlocksPerPayment...
                                 // change category to immature to prevent payment
                                 // and to keep track of confirmations/immature balances
-                                if (payingBlocks > maxBlocksPerPayment)
-                                    r.category = 'immature';
                                 return true;
                             default:
                                 return false;
