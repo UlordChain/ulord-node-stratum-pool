@@ -28,7 +28,7 @@
         "enabled": true,
         "paymentMode": "pplnt",
         "_comment_paymentMode":"prop, pplnt",
-        "paymentInterval":180 ,
+        "paymentInterval":14400 ,
         "_comment_paymentInterval": "Interval in seconds to check and perform payments.",
         "minimumPayment": 0.1,
         "maxBlocksPerPayment": 50,
