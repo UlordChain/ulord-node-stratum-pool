@@ -82,8 +82,8 @@
         function getReadableHashRateString(hashrate){
             var i = 0;
             var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
-            while (hashrate >= 1024){
-                hashrate = hashrate / 1024;
+            while (hashrate >= 1000){
+                hashrate = hashrate / 1000;
                 i++;
             }
             return hashrate.toFixed(2) + byteUnits[i];
@@ -92,8 +92,8 @@
         function getReadableNetworkHashRateString(hashrate){
             var i = 0;
         var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
-        while (hashrate > 1024){
-            hashrate = hashrate / 1024;
+        while (hashrate >= 1000){
+            hashrate = hashrate / 1000;
             i++;
         }
         return hashrate.toFixed(2) + byteUnits[i];
@@ -160,7 +160,7 @@
         mixedData = mixedData.filter(function(e,i){
             var dataTime = parseInt(e.split(":")[4]);
             var payDate = new Date(dataTime);
-            return payDate.getDay() == currentDate.getDay()&&payDate.getFullYear() == currentDate.getFullYear()&&payDate.getMonth() == currentDate.getMonth();
+            return payDate.getDate() == currentDate.getDate()&&payDate.getFullYear() == currentDate.getFullYear()&&payDate.getMonth() == currentDate.getMonth();
         })
         mixedData.sort(function(a,b){
             var aTime = a.split(":")[4];
