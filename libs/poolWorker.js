@@ -94,20 +94,28 @@ module.exports = function(logger){
                 break;
                 case 'DROPBLOCK':
                 if(process.env.forkId!==0){
-					for(var i in pools){
-						if(pools[i].jobManager && pools[i].jobManager.processTemplate){
-                    		pools[i].jobManager.processTemplate(message.rpcData);
-						}
-					}
+			for(var i in pools){
+				if(pools[i].jobManager && pools[i].jobManager.processTemplate){
+                    			pools[i].jobManager.processTemplate(message.rpcData);
+				}
+			}
                 }
                 break;
-				case "BLACKCALC":
-                                    for(var i in pools){
-                                         if(pools[i].stratumServer){
-                                               pools[i].stratumServer.startDig(message.miner);
-                                         }
-                                    }
+		case "BLACKCALC":
+                     for(var i in pools){
+                          if(pools[i].stratumServer){
+                               pools[i].stratumServer.startDig(message.miner);
+                          }
+                      }
                 break;
+		case "getConnections":
+		     for(var i in pools){
+                         if(pools[i].stratumServer){
+                               pools[i].stratumServer.getConnections(message.address);
+                         }
+                     }
+                break;
+			
 
         }
     });
