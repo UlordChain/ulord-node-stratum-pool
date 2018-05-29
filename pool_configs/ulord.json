@@ -29,7 +29,7 @@
         "paymentMode": "pplnt",
         "_comment_paymentMode":"prop, pplnt",
         "paymentInterval":14400 ,
-        "_comment_paymentInterval": "Interval in seconds to check and perform payments.",
+        "_comment_paymentInterval": "Interval in seconds to check and perform payments. The payment interval can be specified, with reference to 12:00 AM in the server area.",
         "minimumPayment": 0.1,
         "maxBlocksPerPayment": 50,
         "daemon": {
