@@ -263,7 +263,7 @@ input{
         function getReadableNetworkHashRateString(hashrate){
            var i = 0;
            var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
-           while (hashrate > 1000){
+           while (hashrate >= 1000){
             hashrate = hashrate / 1000;
             i++;
         }
@@ -441,7 +441,7 @@ input{
 function getReadableHashRateString(hashrate){
    var i = 0;
    var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
-   while (hashrate > 1000){
+   while (hashrate >= 1000){
     hashrate = hashrate / 1000;
     i++;
 }
