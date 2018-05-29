@@ -34,7 +34,7 @@
        
         "daemon": {
             "host": "127.0.0.1",
-            "port": 19889,
+            "port": 9889,
             "user": "ulordpool",
             "password": "ulordpool"
         }
@@ -57,7 +57,7 @@
     "daemons": [
 	{   
             "host": "127.0.0.1",
-            "port": 19889,
+            "port": 9889,
             "user": "ulordpool",
             "password": "ulordpool"
         }
