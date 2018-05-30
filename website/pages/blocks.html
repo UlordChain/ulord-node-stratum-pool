@@ -1,162 +1,53 @@
 <style>
-    body {
-        background: white!important;
-        padding-top: 70px;
-    }
-    header {
-        background: #FFFFFF;
-        box-shadow: 0 2px 4px 0 rgba(224,224,224,0.50);
-        position: fixed;
-        width: 100%;
-        top:0;
-        z-index: 100;
-    }
-    header>.page-container .home-menu>ul>li>a {
-        color:#4A4A4A;
-    }
-    .pure-menu .pure-menu-selected a {
-        color:#0D9FFF!important;
-    }
-    .home {
-        background-image: url(/static/youyikuangchi_white.svg);
-    }
+body {
+    background: white!important;
+    padding-top: 70px;
+}
+header {
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(224,224,224,0.50);
+    position: fixed;
+    width: 100%;
+    top:0;
+    z-index: 100;
+}
+header>.page-container .home-menu>ul>li>a {
+    color:#4A4A4A;
+}
+.pure-menu .pure-menu-selected a {
+    color:#0D9FFF!important;
+}
+.home {
+    background-image: url(/static/youyikuangchi_white.svg);
+}
 </style>
 <div class="page-container">
     <div class="info-wrap">
         <div class="info-row blocks">
             <!--Last 500 mined blocks start-->
-            {{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
-            {{ function readableDate(a){ return new Date(parseInt(a)).toString(); } }}
-            {{ for(var pool in it.stats.pools) { }}
-            {{ var blockscomb = new Array; }}
             <div class="desktop-100 faq-wrap">
-                {{ for(var pool in it.stats.pools) { }}
                 <div class="blocks-content">
                     <table class="home-table" id="blocksTable">
                         <thead>
-                        <tr class="home-tr">
-                            <th class="home-td th-block blocksT1">Block height</th>
-                            <th class="home-td th-hash blocksT2">Hash value</th>
-                            <th class="home-td th-time blocksT3">Time</th>
-                            <th class="home-td th-luck blocksT4">Luck</th>
-                            <th class="home-td th-miner blocksT5">Miner</th>
-                        </tr>
+                            <tr class="home-tr">
+                                <th class="home-td th-block blocksT1">Block height</th>
+                                <th class="home-td th-hash blocksT2">Hash value</th>
+                                <th class="home-td th-time blocksT3">Time</th>
+                                <th class="home-td th-miner blocksT5">Miner</th>
+                            </tr>
                         </thead>
                         <tbody>
 
                         </tbody>
                     </table>
                 </div>
-                {{ } }}
-                {{ } }}
             </div>
             <!--Last 500 mined blocks end-->
         </div>
     </div>
 </div>
 <script>
-    var poolHashrateData;
-    var stats;
-    $(function() {
-        // statsSource.addEventListener('message', function (e) {
-        //     stats = JSON.parse(e.data);
-        //     poolHashrateData = [];
-        //     for (var pool in stats.pools) {
-        //         poolHashrateData.push({
-        //             key: pool,
-        //             values: stats.pools[pool].hashrate
-        //         });
-        //         $('#statsMiners' + pool).text(stats.pools[pool].minerCount);
-        //         $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
-        //         $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
-        //         $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
-        //         $('#statsLuckDays' + pool).text(stats.pools[pool].luckDays);
-        //         $('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
-        //         $('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(8));
-        //         $('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
-        //         $('#statsNetworkDiff' + pool).text((parseFloat(stats.pools[pool].poolStats.networkDiff)).toFixed(5));
-        //         $('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats.networkSols));
-        //         $('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
-        //     }
-        // });
-
-
-        // function calculateAverageHashrate(pool) {
-        //     var count = 0;
-        //     var total = 1;
-        //     var avg = 0;
-        //     for (var i = 0; i < poolHashrateData.length; i++) {
-        //         count = 0;
-        //         for (var ii = 0; ii < poolHashrateData[i].values.length; ii++) {
-        //             if (pool == null || poolHashrateData[i].key === pool) {
-        //                 count++;
-        //                 avg += parseFloat(poolHashrateData[i].values[ii][1]);
-        //             }
-        //         }
-        //         if (count > total)
-        //             total = count;
-        //     }
-        //     avg = avg / total;
-        //     return avg;
-        // }
-
-        function getReadableHashRateString(hashrate){
-            var i = 0;
-            var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
-            while (hashrate >= 1000){
-                hashrate = hashrate / 1000;
-                i++;
-            }
-            return hashrate.toFixed(2) + byteUnits[i];
-        }
-
-        function getReadableNetworkHashRateString(hashrate){
-            var i = 0;
-        var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
-        while (hashrate >= 1000){
-            hashrate = hashrate / 1000;
-            i++;
-        }
-        return hashrate.toFixed(2) + byteUnits[i];
-
-        }
-
-        var groupedByFinder = {};
-        var data = [];
-        var blockscomb = [];
-
-        for (var i=0; i < blockscomb.length; i++) {
-            finder=blockscomb[i][3]; // if other doesn 't already have a property for the current letter
-            // create it and assign it to a new empty array
-            if (!(finder in groupedByFinder))
-                groupedByFinder[finder] = [];
-
-            groupedByFinder[finder].push(blockscomb[i]);
-        }
-
-        Object.keys(groupedByFinder).forEach(function(i) {
-            var obj = {};
-            obj.label = i
-            obj.value = groupedByFinder[i].length
-            data.push(obj)
-        });
-
-        var _miner = "{{=String(it.stats.address).split(".")[0]}}";
-        function getWorkerNameFromAddress(w) {
-            var worker = w;
-            if (w.split(".").length > 1) {
-                worker = w.split(".")[1];
-                if (worker == null || worker.length < 1) {
-                    worker = "noname";
-                }
-            } else {
-                worker = "noname";
-            }
-            return worker;
-        }
-
-        //Datepicker
-        function formatDateTime(timeStamp) {
+    function formatDateTime(timeStamp) {
             var date = new Date();
             date.setTime(timeStamp);
             var y = date.getFullYear();
@@ -172,47 +63,41 @@
             second = second < 10 ? ('0' + second) : second;
             return m + '-' + d+' '+h+':'+minute+':'+second;
         };
+    $(function() {
+        $.getJSON("/api/blocks",function(data){
+            var dataToday = [];
+            for(var i in data){
+                var temp = data[i].split(':');
+                var blockDate = new Date(parseInt(temp[4]));
+                var nowDate = new Date();
+                if(nowDate.getDate() == blockDate.getDate()&&nowDate.getFullYear() == blockDate.getFullYear()&&nowDate.getMonth() == blockDate.getMonth()){
+                    dataToday.push(data[i]);
+                }             
+            }
+            blockHtml = '';
 
-        var blockHtml = '';
-	pendingBlock = {{=JSON.stringify(it.stats.pools.ulord.pending.blocks)}};
-        confirmedBlock = {{=JSON.stringify(it.stats.pools.ulord.confirmed.blocks)}};
-	mixedData = pendingBlock.concat(confirmedBlock);
-	var currentDate = new Date();
-	mixedData = mixedData.filter(function(e,i){
-            var dataTime = parseInt(e.split(":")[4]);
-            var payDate = new Date(dataTime);
-            return payDate.getDate() == currentDate.getDate()&&payDate.getFullYear() == currentDate.getFullYear()&&payDate.getMonth() == currentDate.getMonth();
-        })
-	mixedData.sort(function(a,b){
-            var aTime = a.split(":")[4];
-            var bTime = b.split(":")[4];
-            return bTime-aTime;
-        })
-	var luckDays = {{= it.stats.pools.ulord.luckDays}};
-	for(var i=0;i<mixedData.length;i++){
-            var block = mixedData[i].split(":");
-            blockHtml +='<tr class="home-tr">' +
-                    '<td class="home-td td-block">' +
-                    '<a href="https://explorer.ulord.one/block/'+ block[0]+ '" target="_blank">' + block[2] +'</a>' +
-                    '</td>' +
-                    '<td class="home-td td-hash">' +
-                    '<a href="https://explorer.ulord.one/block/'+ block[0] +'" target="_blank">' + block[0] +'</a>' +
-                    '<label>'+ block[0] + '</label>' +
-                    '</td>' +
-                    '<td class="home-td td-time">' +
-                    '<small>'+ formatDateTime(block[4]) +'</small>' +
-                    '</td>' +
-                    '<td class="home-td td-luck">' +
-                    '<div>' +
-                    '<span class="badge-green" id="statsLuckDaysulord">'+luckDays +'</span>' +
-                    '</div>' +
-                    '</td>' +
-                    '<td class="home-td td-miner">' +
-                    '<a href="/miners/'+ block[3].split('.')[0] +'">'+ block[3] +'</a>' +
-                    '</td>' +
-                    '</tr> '
-        }
-	$('#blocksTable tbody').html(blockHtml);
+            for(var i=0;i<dataToday.length;i++){
+                var block = dataToday[i].split(":");
+                blockHtml +='<tr class="home-tr">' +
+                '<td class="home-td td-block">' +
+                '<a href="https://explorer.ulord.one/block/'+ block[0]+ '" target="_blank">' + block[2] +'</a>' +
+                '</td>' +
+                '<td class="home-td td-hash">' +
+                '<a href="https://explorer.ulord.one/block/'+ block[0] +'" target="_blank">' + block[0] +'</a>' +
+                '<label>'+ block[0] + '</label>' +
+                '</td>' +
+                '<td class="home-td td-time">' +
+                '<small>'+ formatDateTime(block[4]) +'</small>' +
+                '</td>' +
+                '<td class="home-td td-miner">' +
+                '<a href="/miners/'+ block[3].split('.')[0] +'">'+ block[3] +'</a>' +
+                '</td>' +
+                '</tr> '
+            }
+            $('#blocksTable tbody').html(blockHtml);
+        }) 
+
+        
     });
 
 </script>
