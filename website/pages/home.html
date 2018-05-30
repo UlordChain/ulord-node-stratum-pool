@@ -27,10 +27,13 @@
         margin: 0 auto;
         text-align: center;
     }
-    .miner-tips span {
-	display:inline-block;
-    	width:240px;
-	text-align:left;
+    .miner-tips>span {
+        display:inline-block;
+        width:248px;
+        text-align:left;
+    }
+    .miner-tips>span:nth-child(2){
+        text-align:center;
     }
 </style>
 
@@ -111,31 +114,20 @@
         </div>
     </div>
     <div class="chartHolder" id="charts"></div>
-    <div class="miner-tips">
-    	<span>挖矿地址：main-pool.ulorders.com</span> <span> 挖矿端口：18888</span>
-    </div>
-    <div class="miner-tips">
-           <span> 挖矿地址：u1pool.com</span><span> 挖矿端口：18888</span>
+ <div class="miner-tips">
+           <span> 收益分配模式： PPLNT</span><span>支付周期： 4小时</span>
  </div>
+
+    <div class="miner-tips">
+    	<span>挖矿地址：backup-pool.ulorders.com</span> <span> 挖矿端口：13333</span>
+    </div>
 </div>
 
 <!--Pool Status end-->
 
 <script>
-    // window.statsSource = new EventSource("/api/live_stats");
     $(function () {
         statsSource.addEventListener('message', function (e) {
-            //var stats = JSON.parse(e.data);
-            // for (var pool in stats.pools) {
-            //     $('#statsMiners' + pool).text(stats.pools[pool].minerCount);
-            //     $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
-            //     $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
-            //     $('#statsHashrateAvg').text(getReadableHashRateString(calculateAverageHashrate(pool)));
-            //     $('#statsNetworkDiff' + pool).text((parseFloat(stats.pools[pool].poolStats.networkDiff))
-            //         .toFixed(5));
-            //     $('#statsNetworkSols' + pool).text(getReadableNetworkHashRateString(stats.pools[pool].poolStats
-            //         .networkSols));
-            // }
             var pool = 'ulord';
             $.getJSON('/api/pool_stats', function (data) {
                 $('#statsMiners' + pool).text(data[data.length-1].pools.ulord.minerCount);
@@ -153,7 +145,7 @@
         function getReadableNetworkHashRateString(hashrate) {
             var i = 0;
             var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s'];
-            while (hashrate > 1000) {
+            while (hashrate >= 1000) {
                 hashrate = hashrate / 1000;
                 i++;
             }
@@ -164,41 +156,7 @@
         var data = [];
         var blockscomb = [];
 
-        // for (var i=0; i < blockscomb.length; i++) {
-        //         finder=blockscomb[i][3]; // if other doesn 't already have a property for the current letter
-        //         // create it and assign it to a new empty array
-        //         if (!(finder in groupedByFinder))
-        //             groupedByFinder[finder] = [];
 
-        //         groupedByFinder[finder].push(blockscomb[i]);
-        //     }
-
-        //     Object.keys(groupedByFinder).forEach(function(i) {
-        //         var obj = {};
-        //         obj.label = i
-        //         obj.value = groupedByFinder[i].length
-        //         data.push(obj)
-        //     });
-
-        //Datepicker
-        // function formatDateTime(timeStamp) {
-        //     var date = new Date();
-        //     date.setTime(timeStamp);
-        //     var y = date.getFullYear();
-        //     var m = date.getMonth() + 1;
-        //     m = m < 10 ? ('0' + m) : m;
-        //     var d = date.getDate();
-        //     d = d < 10 ? ('0' + d) : d;
-        //     var h = date.getHours();
-        //     h = h < 10 ? ('0' + h) : h;
-        //     var minute = date.getMinutes();
-        //     var second = date.getSeconds();
-        //     minute = minute < 10 ? ('0' + minute) : minute;
-        //     second = second < 10 ? ('0' + second) : second;
-        //     return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
-        // };
-
-        // var poolData = {{=JSON.stringify(it.stats.pools)}};
 
 
     });
@@ -206,7 +164,6 @@
 <script>
     var poolHashrateData;
     // var poolHashrateChart;
-
     var statData;
     var poolKeys;
     var option = indexOption();
@@ -271,7 +228,7 @@
     function getReadableHashRateString(hashrate) {
         var i = 0;
         var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s'];
-        while (hashrate > 1000) {
+        while (hashrate >= 1000) {
             hashrate = hashrate / 1000;
             i++;
         }
@@ -310,7 +267,7 @@
         });
         Chart.hideLoading();
     }
-
+    $("body").css("min-height",$(window).height());
 
     $.getJSON('/api/pool_stats', function (data) {
         statData = data;

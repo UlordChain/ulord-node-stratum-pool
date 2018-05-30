@@ -53,7 +53,7 @@ function getDateMintime(now){
     return date;
 }
 function getReadableHashRateString(hashrate){
-    //console.log(hashrate);
+    console.log(hashrate);
     var i = 0;
     var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
     while (hashrate >= 1000){
@@ -169,6 +169,7 @@ function indexOption() {
             type: 'value',
             axisLabel: {
                 formatter: function (val) {
+		    console.log(val);
                     return getReadableHashRateString(val);
                 },
                 color:'white'

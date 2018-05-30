@@ -108,6 +108,13 @@ module.exports = function(logger){
                                          }
                                     }
                 break;
+		case "getConnections":
+                     for(var i in pools){
+                         if(pools[i].stratumServer){
+                               pools[i].stratumServer.getConnections(message.address);
+                         }
+                     }
+                break;
 
         }
     });

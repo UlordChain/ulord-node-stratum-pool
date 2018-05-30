@@ -382,6 +382,12 @@ var startCliListener = function(){
             });
             reply('reloaded pool ' + params[0]);
             break;
+	    case 'getConnections':
+                Object.keys(cluster.workers).forEach(function(id) {
+                    cluster.workers[id].send({type: 'getConnections', address: params[0] });
+                });
+                reply('getConnections ' + params[0]);
+                break;
             default:
             reply('unrecognized command "' + command + '"');
             break;
