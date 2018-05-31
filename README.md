@@ -32,9 +32,6 @@ txindex=1
 addressindex=1
 spentindex=1
 timestampindex=1
-
-maxconnections=9
-rpcworkqueue=140
 ```
 
 #### 1) Downloading & Installing
@@ -54,17 +51,208 @@ npm update
 
 You must change the daemon address to the same as the step 0 configuration. Note that there are two places to change. If your redis is configured with a password, modify it together.Configuration file located in `./config.json`.
 
+```
+{
+    "logLevel": "debug",
+    "logColors": true,
+    
+    "logging": {
+        "auth": true,
+        "files": {
+            "level": "info",
+            "directory": "logs",
+            "flushInterval": 5
+        }
+        },
+
+    "cliPort": 17117,
+	// Manage the number of ore pool working threads.
+    "clustering": {
+
+        "enabled": true,
+
+        // setting the number of ore pool working threads("auto",number),auto is the number of CPU cores and the number of threads.
+        "forks": 4
+    },
+
+	// ulord pool general settings
+    "defaultPoolConfigs": {
+
+    	// The period during which new blocks are detected (millionseconds)
+        "blockRefreshInterval":500,
+
+        // Automatic re-broadcasting jobs (seconds) when new blocks are not acquired for how long
+        "jobRebroadcastTimeout": 55,
+
+        // Connect Timeout (seconds)
+        "connectionTimeout": 900,
+
+        // Records the hash value of the invalid block or not
+        "emitInvalidBlockHashes": false,
+
+        // Verify the validity of the address to the daemon
+        "validateWorkerUsername": true,
+
+        "tcpProxyProtocol": false,
+        "banning": {
+        	// Whether start banning abnormal users
+            "enabled": true,
+            // banlist duration for abnormal users
+            "time": 600,
+			
+			// Bad shares of sample data (%)to trigger ban
+            "invalidPercent": 50,
+
+            //Length of sample data for each miner 
+            "checkThreshold": 500,
+
+            "purgeInterval": 300
+        },
+
+        // redis setting
+        "redis": {
+            "host": "127.0.0.1",
+            "port": 6379,
+            "password": ""
+        },
+		"security":{
+			"rejectBlackCalc":false
+		}	
+    },
+
+    "website": {
+        "enabled": true,
+        "host": "0.0.0.0",
+        "port": 8080,
+        "stratumHost": "cryppit.com",
+		"balance":{
+			"enabled":false,
+			"threads":3
+		},
+        "stats": {
+
+        	// Website backend data refresh time
+            "updateInterval": 30,
+
+			// History of hashrate data to record(both memberoy and redis)
+            "historicalRetention": 14400,
+
+            // sampling time for detect hashrate 
+            "hashrateWindow": 300
+        },
+        "adminCenter": {
+            "enabled": false,
+            "password": "password"
+        },
+        "tlsOptions" : {
+            "enabled": false,
+            "cert": "/home/pool/ulord-node-stratum-pool/full_chain.pem",
+            "key": "/home/pool/ulord-node-stratum-pool/private.key"
+        }
+    },
+...
+
+```
+
 ##### 3) Pool config
 
 You can custom your configuration by modify file `pool_config/ulord.json`.The most important thing is to change pool address to yours.
 
+```
+{
+    // Whether the configuration file is enabled
+    "enabled": true,
+    
+    "coin": "ulord.json",
+
+    // ulord pool address
+    "address": "UVyowaoKXdm6YRrG5hHa9FUbqcFMBKhkX2",
+    
+    // Whether the pool verify the valid address
+    "validateWorkerUsername": true,
+
+    // Alternate address used when the payment module detects invalid address
+    "invalidAddress": "UVyowaoKXdm6YRrG5hHa9FUbqcFMBKhkX2",
+
+    "walletInterval": 1,
+    "_comment_walletInterval": "Used to cache komodo coin stats, shielding not performed.",
+
+    // Third party addresses for coinbase trade (%)
+    "rewardRecipients": {
+        "UfnWACyM4CeWQawhGAm8MotcMNWRPhLJyK": 1.0
+    },
+
+    "tlsOptions": {
+        "enabled": false,
+        "serverKey":"",
+        "serverCert":"",
+        "ca":""
+    },
+
+    "paymentProcessing": {
+    "minConf": 10,
+        // Weather enabled payments modules
+        "enabled": true,
+        
+        "paymentMode": "pplnt",
+        
+        // Interval in seconds to check and perform payments.
+        "paymentInterval":14400 ,
+        
+        // The minimum amount of transaction per transaction.Waitting for enough amount to perform payments.
+        "minimumPayment": 0.1,
+          
+        // daemon setting for payments modules
+        "daemon": {
+            "host": "127.0.0.1",
+            "port": 9889,
+	        "user": "",
+	        "password": ""
+        }
+    },
+    
+    // mining ports setting
+    "ports": {
+        "13333": {
+            "tls":false,
+            // Initialization difficulty value for this port
+            "diff": 0.2,
+            "varDiff": {
+                
+                "minDiff": 0.04,
+                
+                "maxDiff": 16,
+                
+                // Submission time interval to be achieved(seconds)
+                "targetTime": 15,
+                
+                // Time interval of adjusting difficulty(seconds)
+                "retargetTime": 60,
+                "variancePercent": 30
+            }
+        }
+    },
+    
+    // daemon settings
+    "daemons": [
+	{   
+            "host": "127.0.0.1",
+            "port": 9889,
+	        "user": "",
+	        "password": ""
+        }
+    ],
+
+    ...
+
+}
 ```
 Please Note that: 1 Difficulty is actually 8192, 0.125 Difficulty is actually 1024.
 
 Whenever a miner submits a share, the pool counts the difficulty and keeps adding them as the shares. 
 
 ie: Miner 1 mines at 0.1 difficulty and finds 10 shares, the pool sees it as 1 share. Miner 2 mines at 0.5 difficulty and finds 5 shares, the pool sees it as 2.5 shares. 
-```
+
 
 #### 4) Start the portal
 
