@@ -5,7 +5,15 @@ This is a Cryptohello mining pool based off of Node Open Mining Portal.
 
 Usage
 =====
+#### Quick development guide
 
+Please refer to [https://github.com/UlordChain/ulord-node-stratum-pool/wiki](https://github.com/UlordChain/ulord-node-stratum-pool/wiki), and you will know how to build a ulord-node-stratum-pool.
+
+#### Start
+
+```bash
+git clone https://github.com/UlordChain/ulord-node-stratum-pool.git
+```
 
 #### Requirements
 * [Coin daemon](https://github.com/UlordChain/UlordChain)(find the coin's repo and build latest version from source)
