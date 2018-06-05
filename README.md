@@ -26,12 +26,15 @@ Follow the build/install instructions for your coin daemon.Your ulord.conf file 
 this file at a dir named `.ulordcore`):
 ```
 testnet=0
-rpcuser=ulordpool
-rpcpassword=ulordpool
+rpcuser=thgyrpc
+rpcpassword=Thgy@123456
+rpcworkqueue=160
 txindex=1
 addressindex=1
 spentindex=1
 timestampindex=1
+reindex=0
+maxconnections=20
 ```
 
 #### 1) Downloading & Installing
