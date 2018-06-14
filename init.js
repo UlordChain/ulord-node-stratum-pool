@@ -12,7 +12,7 @@ var PoolLogger = require('./libs/logUtil.js');
 var CliListener = require('./libs/cliListener.js');
 var PoolWorker = require('./libs/poolWorker.js');
 var PaymentProcessor = require('./libs/paymentProcessor.js');
-var Website = require('./libs/website.js');
+var Website = require('./libs/web.js');
 var ProfitSwitch = require('./libs/profitSwitch.js');
 var TLS301Holder = require('./libs/tls301holder.js');
 var algos = require('stratum-pool/lib/algoProperties.js');
@@ -521,17 +521,21 @@ var startWebThread = function(i){
        });
 
 }
-
 var startWebsite = function(){
-    if (!portalConfig.website.enabled) return;
-    var forkThreads = portalConfig.website.balance.enabled?portalConfig.website.balance.threads:1;
-    for (var i=0;i<forkThreads;i++){
-        (function(i){
-            startWebThread(i);
-        })(i)
 
-    }
-};
+    if (!portalConfig.website.enabled) return;
+
+    var worker = cluster.fork({
+        workerType: 'website',
+        pools: JSON.stringify(poolConfigs),
+        portalConfig: JSON.stringify(portalConfig)
+    });
+    worker.on('exit', function(code, signal){
+        logger.error('Master', 'Website', 'Website process died, spawning replacement...');
+        setTimeout(function(){
+            startWebsite(portalConfig, poolConfigs);
+        }, 2000);
+    })};
 var start301PR = function(){
     if(portalConfig.website.tlsOptions.enabled){
         var worker = cluster.fork({

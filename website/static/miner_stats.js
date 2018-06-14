@@ -203,26 +203,6 @@ function displayCharts() {
     return true;
 }
 
-// function updateStats() {
-//     totalHash = statData.totalHash;
-//     totalPaid = statData.paid;
-//     totalBal = statData.balance;
-//     totalImmature = statData.immature;
-//     totalShares = statData.totalShares;
-//     // do some calculations
-//     var _blocktime = 250;
-//     var _networkHashRate = parseFloat(statData.networkSols) * 1.2;
-//     var _myHashRate = (totalHash / 1000000) * 2;
-//     var luckDays =  ((_networkHashRate / _myHashRate * _blocktime) / (24 * 60 * 60)).toFixed(3);
-//     // update miner stats
-//     $("#statsHashrate").text(getReadableHashRateString(totalHash));
-//     $("#statsHashrateAvg").text(getReadableHashRateString(calculateAverageHashrate(null)));
-//     $("#statsLuckDays").text(luckDays);
-//     $("#statsTotalImmature").text(totalImmature);
-//     /*$("#statsTotalBal").text(totalBal);*/
-//     $("#statsTotalPaid").text(totalPaid);
-//     $("#statsTotalShares").text(totalShares.toFixed(2));
-// }
 
 function countTime(end) {
     var now = new Date().getTime();//当前时间
@@ -266,20 +246,16 @@ function updateWorkerStats() {
         var htmlSafeWorkerName = w.split('.').join('_').replace(/[^\w\s]/gi, '');
         var saneWorkerName = getWorkerNameFromAddress(w);
         statData.workers[w].online = true;
+	var diff = statData.workers[w].diff >= 0 ? statData.workers[w].diff : "-";
         $("#statsHashrate"+htmlSafeWorkerName).text(getReadableHashRateString(statData.workers[w].hashrate));
         $("#statsHashrateAvg"+htmlSafeWorkerName).text(getReadableHashRateString(calculateAverageHashrate(saneWorkerName)));
         $("#statsLuckDays"+htmlSafeWorkerName).text(statData.workers[w].luckDays);
-      //  $("#statsPaid"+htmlSafeWorkerName).text(statData.workers[w].paid);
-        /*$("#statsBalance"+htmlSafeWorkerName).text(statData.workers[w].balance);*/
-       // $("#statsShares"+htmlSafeWorkerName).text(Math.round(statData.workers[w].currRoundShares * 100) / 100);
-        $("#statsDiff"+htmlSafeWorkerName).text(statData.workers[w].diff);
+	$("#statsDiff"+htmlSafeWorkerName).text(diff);
         $("#statsDate"+htmlSafeWorkerName).text(formatDateTime2(statData.workers[w].time));
     }
 }
 function addWorkerToDisplay(name, htmlSafeName, workerObj) {
-    var htmlToAdd = "", workerName = "";
-    //htmlToAdd+=`<th><small class="minerT13">${$.i18n.map.stLucky}</small></th>`;
-   //console.log(name + '=' + workerObj.online);
+    var htmlToAdd = "", workerName = "", diff = "" ;
     if (workerObj.online) {
         workerName = '<tr><td class="boxLowerHeader">'+name+'</td>';
     } else {
@@ -289,13 +265,14 @@ function addWorkerToDisplay(name, htmlSafeName, workerObj) {
             workerName = '<tr><td class="boxLowerHeader">' + name + ' <span class="offline minerT15">(offline)</span></td>';
         }
     }
+    diff = workerObj.diff >= 0 ? workerObj.diff : "-";
     htmlToAdd+=workerName;
     htmlToAdd+='<td><span id="statsHashrate'+htmlSafeName+'">'+getReadableHashRateString(workerObj.hashrate)+'</span></td>';
     htmlToAdd+='<td><span id="statsHashrateAvg'+htmlSafeName+'">'+getReadableHashRateString(calculateAverageHashrate(name))+'</span></td>';
-    htmlToAdd+='<td><span id="statsDiff'+htmlSafeName+'">'+workerObj.diff+'</span></td>';
+    htmlToAdd+='<td><span id="statsDiff'+htmlSafeName+'">'+diff+'</span></td>';
    // htmlToAdd+='<td><span id="statsShares'+htmlSafeName+'">'+(Math.round(workerObj.currRoundShares * 100) / 100)+'</span></td>';
    // htmlToAdd+='<td><span id="statsLuckDays'+htmlSafeName+'">'+workerObj.luckDays+'</span></td>';
-   // htmlToAdd+='<td><span id="statsPaid'+htmlSafeName+'">'+workerObj.paid+'</span></td>';
+    // htmlToAdd+='<td><span id="statsBalance'+htmlSafeName+'">'+workerObj.balance+'</span></td>';
     htmlToAdd+='<td><span id="statsDate'+htmlSafeName+'">'+formatDateTime2(workerObj.time)+'</span></td></tr>';
 
     $("#boxesWorkers tbody").html($("#boxesWorkers tbody").html()+htmlToAdd);
@@ -375,6 +352,8 @@ $.getJSON('/api/worker_stats?'+_miner, function(data){
     displayCharts(data);
     rebuildWorkerDisplay();
     // window.translate();
+    $("#amountPaid").text(data.paid);
+    $("#amountBalance").text(data.immature);
 });
 
 // live stat updates
@@ -404,6 +383,8 @@ function dealWithEventListener(){
             updateWorkerStats();
         }
         displayCharts(data);
+        $("#amountPaid").text(data.paid);
+        $("#amountBalance").text(data.immature);
     });
 }
 

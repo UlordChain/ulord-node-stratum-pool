@@ -130,17 +130,37 @@ table {
 #statsTable tr td:first-of-type {
 	width: 595px;
 }
+.statAmount {
+	text-align: center;
+}
+.statAmount>div {
+	display: inline-block;
+	width: 300px;
+	text-align: center;
+	color: white;
+}
+.statAmount>div>span:first-child {
+    text-align: left;
+    padding-right: 16px;
+}
+.miner-content-container.transactions {
+	padding-top: 20px;
+}
 </style>
 <div class="stats_head">
-<p class="mstc">算力统计</p>
-<div class="miner-content-container">
-	<div class="miner-content-wrap">
+	<p class="mstc">算力统计</p>
+	<div class="miner-content-container">
+		<div class="miner-content-wrap">
 			<div id="topCharts">
 				<div class="chartHolder" id="minerChart">
 				</div>
 			</div>
+			<div class="statAmount">
+				<div><span class="amountBalance">No Pay:</span><span id="amountBalance"></span> UT</div>
+				<div><span class="amountPaid">Paid:</span><span id="amountPaid"></span> UT</div>
+			</div>
+		</div>
 	</div>
-</div>
 </div>
 <div class="miner-container">
 	<div class="info-wrap">
@@ -168,7 +188,7 @@ table {
 								</div>
 							</div>
 						</div>
-						<div class="miner-content-container">
+						<div class="miner-content-container transactions">
 							<div class="miner-content-wrap">
 								<div class="faq-wrap payWrap">
 									<p class="pay_status">交易状态</p>

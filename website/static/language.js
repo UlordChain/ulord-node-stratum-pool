@@ -82,10 +82,12 @@ $(function(){
                 $('.minerT9').text(stNow);
                 $('.minerT10').text(stAvg);
                 $('.minerT11').text(stDiff);
-                $('.minerT12').text(stShares);
+                $('.minerT12').text(stBalance);
                 $('.minerT13').text(stLucky);
                 $('.minerT14').text(stPaid);
                 $('.minerT16').text(stTime);
+                $('.amountPaid').html(stAP);
+                $('.amountBalance').html(stAB);
                 $('#board').val(Dashboard);
                 $('#payouts').val(Payouts);
                 $('#rounds').val(Rounds);
@@ -113,6 +115,8 @@ $(function(){
                 $('.faqA10').text(answer10);
                 $('.faqQ11').text(question11);
                 $('.faqA11').text(answer11);
+                $('.faqQ12').text(question12);
+                $('.faqA12').text(answer12);
                 $('.faqEnd').text(QAEnd);
             }
             var language

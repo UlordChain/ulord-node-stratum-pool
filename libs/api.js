@@ -8,9 +8,9 @@ var os = require("os")
 
 var rigPath = path.resolve(__dirname,'../website/static/downloads/ulordrig.exe');
 var rigVersion = path.resolve(__dirname,'../website/static/downloads/ulordrigVersion');
-var rigState = {address:"http://testnet-pool.ulord.one/static/downloads/ulordrig.exe",version:'',md5:''};
+var rigState = {address:"http://backup.u1pool.com/static/downloads/ulordrig.exe",version:'',md5:''};
 function refreshResult(){
-	rigState.address = "http://testnet-pool.ulord.one/static/downloads/ulordrig.exe";
+	rigState.address = "http://backup.u1pool.com/static/downloads/ulordrig.exe";
 
 	async.waterfall([
 		function(callback){
