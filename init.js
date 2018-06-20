@@ -508,17 +508,7 @@ var startWebThread = function(i){
         setTimeout(function(){
             startWebThread(i);
         }, 2000);
-    }).on("message",function(msg){
-               switch(msg.type){
-                       case 'BLACKCALC':
-                       Object.keys(cluster.workers).forEach(function(id) {
-                if (cluster.workers[id].type === 'pool'){
-                    cluster.workers[id].send({type: 'BLACKCALC', miner:msg.miner});
-                  }
-            });
-                       break;
-               }
-       });
+    });
 
 }
 var startWebsite = function(){
@@ -578,16 +568,16 @@ var startProfitSwitch = function(){
 
     poolConfigs = buildPoolConfigs();
 
-    spawnPoolWorkers();
-
-    startPaymentProcessor();
-
-    startWebsite();
-    
-    start301PR();
-
+    if(portalConfig.separationMod.enabled && portalConfig.separationMod.mode === "main"){
+        spawnPoolWorkers();
+        startPaymentProcessor();
+    }else if(portalConfig.separationMod.enabled && portalConfig.separationMod.mode === "web"){
+        startWebsite();
+        start301PR();
+    }else {
+        throw new Error("config error");
+    }
     startProfitSwitch();
-
     startCliListener();
 
 })();

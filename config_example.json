@@ -15,9 +15,12 @@
 
     "clustering": {
         "enabled": true,
-        "forks": "auto"
+        "forks": 4
     },
-
+    "separationMode":{
+        "enabled":true,
+        "mode":"main"
+    },
     "defaultPoolConfigs": {
         "blockRefreshInterval": 500,
         "jobRebroadcastTimeout": 55,
@@ -25,14 +28,11 @@
         "emitInvalidBlockHashes": false,
         "validateWorkerUsername": true,
         "tcpProxyProtocol": false,
-		"security":{
-			"rejectBlackCalc":false
-		},
         "banning": {
             "enabled": true,
             "time": 600,
             "invalidPercent": 50,
-            "checkThreshold": 500,
+            "checkThreshold": 50,
             "purgeInterval": 300
         },
         "redis": {
@@ -46,14 +46,14 @@
         "enabled": true,
         "host": "0.0.0.0",
         "port": 8080,
-        "stratumHost": "cryppit.com",
+        "stratumHost": "u1pool.com",
 		"balance":{
-            "enabled":true,
-            "threads":3
+            "enabled":false,
+            "threads":1
         },
         "stats": {
-            "updateInterval": 30,
-            "historicalRetention": 14400,
+            "updateInterval": 60,
+            "historicalRetention": 10800,
             "hashrateWindow": 300
         },
         "adminCenter": {
