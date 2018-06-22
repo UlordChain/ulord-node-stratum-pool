@@ -102,16 +102,37 @@ module.exports = function(logger){
                 }
                 break;
 				case "BLACKCALC":
-                                    for(var i in pools){
-                                         if(pools[i].stratumServer){
-                                               pools[i].stratumServer.startDig(message.miner);
-                                         }
-                                    }
+                    for(var i in pools){
+                         if(pools[i].stratumServer){
+                               pools[i].stratumServer.startDig(message.miner);
+                         }
+                    }
                 break;
-		case "getConnections":
+		        case "getConnections":
                      for(var i in pools){
                          if(pools[i].stratumServer){
                                pools[i].stratumServer.getConnections(message.address);
+                               _this.shareProcessor.addMoniter({address:message.address})
+                         }
+                     }
+                break;
+                case "startRecord":
+                     for(var i in pools){
+                         if(pools[i].stratumServer){
+                               pools[i].stratumServer.startRecord(message.address);
+                         }
+                     }
+                break;
+                case "stopRecord":
+                     for(var i in pools){
+                         if(pools[i].stratumServer){
+                               pools[i].stratumServer.stopRecord(message.address);
+                         }
+                     }
+                case "shutdown":
+                    for(var i in pools){
+                         if(pools[i].stratumServer){
+                               pools[i].stratumServer.shutdown(message.address);
                          }
                      }
                 break;
@@ -154,7 +175,7 @@ module.exports = function(logger){
         //Functions required for internal payment processing
         else{
 
-            var shareProcessor = new ShareProcessor(logger, poolOptions);
+            _this.shareProcessor = new ShareProcessor(logger, poolOptions);
 
             handlers.auth = function(port, workerName, password, authCallback){
                 if (poolOptions.validateWorkerUsername !== true)
@@ -171,7 +192,7 @@ module.exports = function(logger){
             };
 
             handlers.share = function(isValidShare, isValidBlock, data){
-                shareProcessor.handleShare(isValidShare, isValidBlock, data);
+                _this.shareProcessor.handleShare(isValidShare, isValidBlock, data);
             };
         }
 

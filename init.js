@@ -568,17 +568,21 @@ var startProfitSwitch = function(){
 
     poolConfigs = buildPoolConfigs();
 
-    if(portalConfig.separationMod.enabled && portalConfig.separationMod.mode === "main"){
+    if(portalConfig.separationMode.enabled && portalConfig.separationMode.mode === "main"){
         spawnPoolWorkers();
         startPaymentProcessor();
-    }else if(portalConfig.separationMod.enabled && portalConfig.separationMod.mode === "web"){
+    }else if(portalConfig.separationMode.enabled && portalConfig.separationMode.mode === "web"){
+        startWebsite();
+        start301PR();
+    }else if(!portalConfig.separationMode.enabled){
+        spawnPoolWorkers();
+        startPaymentProcessor();
         startWebsite();
         start301PR();
     }else {
-        throw new Error("config error");
+        throw new Error("config Error");
     }
     startProfitSwitch();
     startCliListener();
-
 })();
 

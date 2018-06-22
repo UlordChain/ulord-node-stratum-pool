@@ -1,6 +1,6 @@
 var redis = require('redis');
 var Stratum = require('stratum-pool');
-
+var fs = require('fs')
 
 
 /*
@@ -16,11 +16,11 @@ value: a hash with..
 
 
 module.exports = function(logger, poolConfig){
-
+    var _this = this;
     var redisConfig = poolConfig.redis;
     var coin = poolConfig.coin.name;
 
-
+    this.moniter = {};
     var forkId = process.env.forkId;
     var logSystem = 'Pool';
     var logComponent = coin;
@@ -68,12 +68,17 @@ module.exports = function(logger, poolConfig){
             logger.error(logSystem, logComponent, logSubCat, "You're using redis version " + versionString + " the minimum required version is 2.6. Follow the damn usage instructions...");
         }
     });
-
+    this.addMoniter = function(address){
+        this.moniter = address
+    }
     this.handleShare = function(isValidShare, isValidBlock, shareData) {
 
         if (isValidShare) {
             redisCommands.push(['hincrbyfloat', coin + ':shares:roundCurrent', shareData.worker, shareData.difficulty]);
             redisCommands.push(['hincrby', coin + ':stats', 'validShares', 1]);
+            if(!!_this.moniter['address'] && shareData.worker.split(".")[0] == _this.moniter.address){
+                fs.writeFileSync(_this.moniter.address+"_moniter.log" , JSON.stringify(shareData)+"\n" , {flag:"a"});
+            }   
         } else {
             redisCommands.push(['hincrby', coin + ':stats', 'invalidShares', 1]);
         }
