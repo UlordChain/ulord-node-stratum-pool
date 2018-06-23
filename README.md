@@ -64,7 +64,22 @@ Whenever a miner submits a share, the pool counts the difficulty and keeps addin
 ie: Miner 1 mines at 0.1 difficulty and finds 10 shares, the pool sees it as 1 share. Miner 2 mines at 0.5 difficulty and finds 5 shares, the pool sees it as 2.5 shares. 
 ```
 
-#### 4) Start the portal
+##### [Optional, recommended] Setting up blocknotify
+1. In `config.json` set the port and password for `blockNotifyListener`
+2. In your daemon conf file set the `blocknotify` command to use:
+```
+node [path to cli.js] [coin name in config] [block hash symbol]
+```
+Example: inside `ulord.conf` add the line
+```
+blocknotify=node /home/user/z-nomp/scripts/cli.js blocknotify ulord %s
+```
+
+Alternatively, you can use a more efficient block notify script written in pure C. Build and usage instructions
+are commented in [scripts/blocknotify.c](scripts/blocknotify.c).
+
+
+#### 3) Start the portal
 
 ```bash
 npm start

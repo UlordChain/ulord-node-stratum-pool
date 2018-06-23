@@ -1,6 +1,6 @@
 {
-    "name": "ulord-pool",
-    "version": "0.1.0",
+    "name": "Ulpool",
+    "version": "0.2.0",
     "description": "ulord stratum mining pool",
     "keywords": [
         "stratum",
@@ -12,7 +12,7 @@
         "cryptohello"
     ],
     "license": "MIT",
-    "author": "Zyan Wlayor",
+    "author": "jack",
     "contributors": [
         "aayanl",
         "sennevb",

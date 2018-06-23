@@ -2,18 +2,19 @@
     "enabled": true,
     "coin": "ulord.json",
 
-    "address": "UfhrEaZWrdJTKX5zpXFqAXTFbhAVG3bgb1",
+    "address": "UVyowaoKXdm6YRrG5hHa9FUbqcFMBKhkX2",
+
     "_comment_address": "pools ulord address; ex, UjKNeYth9s1QkW1N6ubSorfKPA9JvkC39D",
 
     "validateWorkerUsername": true,
 
-    "invalidAddress": "uhpm1PFGb56G3aZxF4feueab98kQcbLixk",
+    "invalidAddress": "UVyowaoKXdm6YRrG5hHa9FUbqcFMBKhkX2",
 
     "walletInterval": 1,
     "_comment_walletInterval": "Used to cache komodo coin stats, shielding not performed.",
 
     "rewardRecipients": {
-        "uVvfixZ1rAXx7ktFCNuRgHrU5yWoDNurEy": 1.0
+        "USwk2sXKpJr3MTM4KD5LPJrqqRS1dwxk8f": 1.0
     },
 
     "tlsOptions": {
@@ -28,19 +29,20 @@
         "enabled": true,
         "paymentMode": "pplnt",
         "_comment_paymentMode":"prop, pplnt",
-        "paymentInterval":900,
+        "paymentInterval":14400 ,
         "_comment_paymentInterval": "Interval in seconds to check and perform payments.",
         "minimumPayment": 0.1,
+        "maxBlocksPerPayment": 50,
         "daemon": {
             "host": "127.0.0.1",
             "port": 9889,
-	    "user": "thgyrpc",
-	    "password": "Thgy@123456"
+    	    "user": "",
+    	    "password": ""
         }
     },
 
     "ports": {
-        "7100": {
+        "13333": {
             "tls":false,
             "diff": 0.05,
             "varDiff": {
@@ -54,11 +56,11 @@
     },
 
     "daemons": [
-	{   
+    	{   
             "host": "127.0.0.1",
             "port": 9889,
-	    "user": "thgyrpc",
-	    "password": "Thgy@123456"
+    	    "user": "",
+    	    "password": ""
         }
     ],
 

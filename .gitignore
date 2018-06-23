@@ -1,12 +1,8 @@
 node_modules/
 .idea/
 config.json
-pool_configs/*.json
+pool_configs/ulord.json
 !pool_configs/zclassic_example.json
-logs/*.log
-logs/Master_debug.log
-logs/PPLNT_debug.log
-logs/POSIX_debug.log
+logs/
 *.log
 package-lock.json
-testp

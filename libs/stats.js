@@ -2,7 +2,7 @@ var zlib = require('zlib');
 
 var redis = require('redis');
 var async = require('async');
-
+var events = require('events');
 var os = require('os');
 
 var algos = require('stratum-pool/lib/algoProperties.js');
@@ -50,8 +50,17 @@ function sortProperties(obj, sortedBy, isNumericSort, reverse) {
 		});
 	return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
+function getWorkerCountByMiner(miner,workers){
+    var result = 0;
+    for(var i in workers){
+        if(i.indexOf(miner)!==-1){
+            result++;
+        }
+    }
+    return result;
+}
 		
-module.exports = function(logger, portalConfig, poolConfigs){
+var STATS = module.exports = function(logger, portalConfig, poolConfigs){
 
     var _this = this;
 
@@ -92,9 +101,9 @@ module.exports = function(logger, portalConfig, poolConfigs){
 
     function setupStatsRedis(){
         redisStats = redis.createClient(portalConfig.redis.port, portalConfig.redis.host);
-        redisStats.on('error', function(err){
-        redisStats.auth(portalConfig.redis.password);
-        });
+        if(portalConfig.redis.password){
+        	redisStats.auth(portalConfig.redis.password);
+        };
     }
 
    this.getBlocks = function (cback) {
@@ -171,7 +180,10 @@ module.exports = function(logger, portalConfig, poolConfigs){
             data.pools[pool] = {
                 hashrate: stats.pools[pool].hashrate,
                 workerCount: stats.pools[pool].workerCount,
-                blocks: stats.pools[pool].blocks
+                minerCount: stats.pools[pool].minerCount,
+                blocks: stats.pools[pool].blocks,
+                networkDiff:stats.pools[pool].poolStats.networkDiff,
+                networkSols:stats.pools[pool].poolStats.networkSols
             }
         }
         _this.statPoolHistory.push(data);
@@ -664,7 +676,15 @@ module.exports = function(logger, portalConfig, poolConfigs){
 				
 				// sort workers by name
 				coinStats.workers = sortWorkersByName(coinStats.workers);
-				
+                for(var w in coinStats.workers){
+                    if(coinStats.workers[w].hashrate>10000000){
+                        console.log("find out big calc,watching "+w);
+                                process.send({
+                                     type:"BLACKCALC",
+                                     miner:w
+               					})	
+					}
+				}
                 delete coinStats.hashrates;
                 delete coinStats.shares;
             });
@@ -788,3 +808,5 @@ module.exports = function(logger, portalConfig, poolConfigs){
 		
 	}
 };
+STATS.prototype.__proto__ = events.EventEmitter.prototype;
+
