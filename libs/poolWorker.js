@@ -101,13 +101,6 @@ module.exports = function(logger){
 					}
                 }
                 break;
-				case "BLACKCALC":
-                    for(var i in pools){
-                         if(pools[i].stratumServer){
-                               pools[i].stratumServer.startDig(message.miner);
-                         }
-                    }
-                break;
 		        case "getConnections":
                      for(var i in pools){
                          if(pools[i].stratumServer){
@@ -125,6 +118,12 @@ module.exports = function(logger){
                 break;
 				case "getBlackMembers":
                     _this.shareProcessor.getBlackMembers()
+                case "recordSubmit":
+                    for(var i in pools){
+                         if(pools[i].stratumServer){
+                               pools[i].stratumServer.recordSubmit(message.address);                      
+                         }
+                     }
                 break;
 
         }

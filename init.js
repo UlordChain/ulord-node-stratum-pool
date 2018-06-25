@@ -229,7 +229,7 @@ var spawnPoolWorkers = function(){
             return 1;
         if (portalConfig.clustering.forks === 'auto')
             return os.cpus().length;
-	if (!isNaN(portalConfig.clustering.forks))
+        if (!isNaN(portalConfig.clustering.forks))
             return portalConfig.clustering.forks
         if (!portalConfig.clustering.forks || isNaN(portalConfig.clustering.forks))
             return 1;
@@ -310,10 +310,10 @@ var spawnPoolWorkers = function(){
                             var executedOperations = redisCommands.length;
                             pileUp -= executedOperations;
                             connection.multi(redisCommands).exec(function(err, replies){
-                             console.log("Execution time: " + (Date.now() - operationExecutionStart).toString() + " PileUp: " + pileUp.toString() + " Executed operations: " + executedOperations.toString());
-                             if (err)
-                                 logger.error('PPLNT', msg.coin, 'Thread '+msg.thread, 'Error with time share processor call to redis ' + JSON.stringify(err));
-                         });
+                               console.log("Execution time: " + (Date.now() - operationExecutionStart).toString() + " PileUp: " + pileUp.toString() + " Executed operations: " + executedOperations.toString());
+                               if (err)
+                                   logger.error('PPLNT', msg.coin, 'Thread '+msg.thread, 'Error with time share processor call to redis ' + JSON.stringify(err));
+                           });
                             redisCommands = [];
                         }
                         
@@ -382,25 +382,26 @@ var startCliListener = function(){
             });
             reply('reloaded pool ' + params[0]);
             break;
-			case 'getConnections':
-        case 'addBlackMember':           
-        case 'removeBlackMember':         
-             Object.keys(cluster.workers).forEach(function(id) {
+            case 'getConnections':
+            case 'addBlackMember':           
+            case 'removeBlackMember':
+            case 'recordSubmit':     
+            Object.keys(cluster.workers).forEach(function(id) {
                 cluster.workers[id].send({type: command, address: params[0] });
             });
             reply(command +' '+ params[0]);
             break;
-		case 'getBlackMembers':
+            case 'getBlackMembers':
             Object.keys(cluster.workers).forEach(function(id) {
                 cluster.workers[id].send({type: command});
             });
             reply("geted");
             break;
-       default:
+            default:
             reply('unrecognized command "' + command + '"');
             break;
         }
-	        }).start();
+    }).start();
 };
 
 
@@ -519,25 +520,25 @@ var startWebsite = function(){
             startWebsite(portalConfig, poolConfigs);
         }, 2000);
     })};
-var start301PR = function(){
-    if(portalConfig.website.tlsOptions.enabled){
-        var worker = cluster.fork({
-            workerType: 'tls301PR'
-        })
-        worker.on('exit',function(){
-            logger.error('Master', 'TLS', 'TLS 301 Moved Permanently process died, spawning replacement...');
-            setTimeout(function(){
-                start301PR();
-            }, 2000);
-        })
+    var start301PR = function(){
+        if(portalConfig.website.tlsOptions.enabled){
+            var worker = cluster.fork({
+                workerType: 'tls301PR'
+            })
+            worker.on('exit',function(){
+                logger.error('Master', 'TLS', 'TLS 301 Moved Permanently process died, spawning replacement...');
+                setTimeout(function(){
+                    start301PR();
+                }, 2000);
+            })
+        }
     }
-}
 
 
 
-var startProfitSwitch = function(){
+    var startProfitSwitch = function(){
 
-    if (!portalConfig.profitSwitch || !portalConfig.profitSwitch.enabled){
+        if (!portalConfig.profitSwitch || !portalConfig.profitSwitch.enabled){
         //logger.error('Master', 'Profit', 'Profit auto switching disabled');
         return;
     }

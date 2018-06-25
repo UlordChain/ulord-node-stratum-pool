@@ -1,7 +1,7 @@
 var redis = require('redis');
 var Stratum = require('stratum-pool');
 var fs = require('fs')
-
+var path = require('path')
 
 /*
 This module deals with handling shares when in internal payment processing mode. It connects to a redis
@@ -84,8 +84,8 @@ module.exports = function(logger, poolConfig){
         this.blackMembers.push(address)
     }   
 	this.getBlackMembers = function(){
-        fs.unlink('./blackMembers.log', function(err) {
-            fs.writeFileSync("./blackMembers.log",_this.blackMembers.join(),{flag:'a'});
+        fs.unlink(path.join(__dirname,'./logs/blackMembers.log'), function(err) {
+            fs.writeFileSync(path.join(__dirname,"./logs/blackMembers.log"),_this.blackMembers.join(),{flag:'a'});
         })
     }
     this.removeBlackMember = function(address){
@@ -103,7 +103,7 @@ module.exports = function(logger, poolConfig){
 
         if (isValidShare) {
             if(!!_this.moniter['address'] && shareData.worker.split(".")[0] == _this.moniter.address){
-                fs.writeFileSync(_this.moniter.address+"_moniter.log" , JSON.stringify(shareData)+'\n' , {flag:"a"});
+                fs.writeFileSync('./logs/'+_this.moniter.address+"_moniter.log" , JSON.stringify(shareData)+'\n' , {flag:"a"});
             }
             if(blackMemberFilter(shareData)){
                 return
@@ -139,10 +139,10 @@ module.exports = function(logger, poolConfig){
             var executionStart = Date.now();
             var executedOperations = redisCommands.length;
             connection.multi(redisCommands).exec(function(err, replies){
-                                                 console.log("Share processor Redis execution time: " + (Date.now() - executionStart).toString() + " Executed operations: " + executedOperations.toString());
-                                                 if (err)
-                                                 logger.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
-                                                 });
+                console.log("Share processor Redis execution time: " + (Date.now() - executionStart).toString() + " Executed operations: " + executedOperations.toString());
+                if (err)
+                logger.error(logSystem, logComponent, logSubCat, 'Error with share processor multi ' + JSON.stringify(err));
+            });
             redisCommands = [];
         }
     };
