@@ -382,17 +382,25 @@ var startCliListener = function(){
             });
             reply('reloaded pool ' + params[0]);
             break;
-	    case 'getConnections':
-                Object.keys(cluster.workers).forEach(function(id) {
-                    cluster.workers[id].send({type: 'getConnections', address: params[0] });
-                });
-                reply('getConnections ' + params[0]);
-                break;
-            default:
+			case 'getConnections':
+        case 'addBlackMember':           
+        case 'removeBlackMember':         
+             Object.keys(cluster.workers).forEach(function(id) {
+                cluster.workers[id].send({type: command, address: params[0] });
+            });
+            reply(command +' '+ params[0]);
+            break;
+		case 'getBlackMembers':
+            Object.keys(cluster.workers).forEach(function(id) {
+                cluster.workers[id].send({type: command});
+            });
+            reply("geted");
+            break;
+       default:
             reply('unrecognized command "' + command + '"');
             break;
         }
-    }).start();
+	        }).start();
 };
 
 
@@ -496,21 +504,6 @@ var startPaymentProcessor = function(){
 };
 
 
-var startWebThread = function(i){
-    var worker = cluster.fork({
-        workerType: 'website',
-        pools: JSON.stringify(poolConfigs),
-        portalConfig: JSON.stringify(portalConfig),
-        threadNum:i
-    });
-    worker.on('exit', function(code, signal){
-        logger.error('Master', 'Website', 'Website process '+ i +' died, spawning replacement...');
-        setTimeout(function(){
-            startWebThread(i);
-        }, 2000);
-    });
-
-}
 var startWebsite = function(){
 
     if (!portalConfig.website.enabled) return;

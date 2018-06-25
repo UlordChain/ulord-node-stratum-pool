@@ -21,6 +21,7 @@ module.exports = function(logger, poolConfig){
     var coin = poolConfig.coin.name;
 
     this.moniter = {};
+    this.blackMembers = [];
     var forkId = process.env.forkId;
     var logSystem = 'Pool';
     var logComponent = coin;
@@ -68,17 +69,49 @@ module.exports = function(logger, poolConfig){
             logger.error(logSystem, logComponent, logSubCat, "You're using redis version " + versionString + " the minimum required version is 2.6. Follow the damn usage instructions...");
         }
     });
+    function blackMemberFilter(shareData){
+        for(var i = 0;i < _this.blackMembers.length;i++){
+            if(shareData.worker.split(".")[0] === _this.blackMembers[i]){
+                return true;
+            }
+        }
+        return false;
+    }
     this.addMoniter = function(address){
         this.moniter = address
+    }
+    this.addBlackMember = function(address){
+        this.blackMembers.push(address)
+    }   
+	this.getBlackMembers = function(){
+        fs.unlink('./blackMembers.log', function(err) {
+            fs.writeFileSync("./blackMembers.log",_this.blackMembers.join(),{flag:'a'});
+        })
+    }
+    this.removeBlackMember = function(address){
+        var indexToDelete
+        for(var i = 0;i < this.blackMembers.length;i++){
+            if(address === this.blackMembers[i]){
+                indexToDelete = i
+            }
+        }
+        if(indexToDelete!=undefined){
+            this.blackMembers.splice(indexToDelete,1);
+        }
     }
     this.handleShare = function(isValidShare, isValidBlock, shareData) {
 
         if (isValidShare) {
+            if(!!_this.moniter['address'] && shareData.worker.split(".")[0] == _this.moniter.address){
+                fs.writeFileSync(_this.moniter.address+"_moniter.log" , JSON.stringify(shareData)+'\n' , {flag:"a"});
+            }
+            if(blackMemberFilter(shareData)){
+                return
+            }
             redisCommands.push(['hincrbyfloat', coin + ':shares:roundCurrent', shareData.worker, shareData.difficulty]);
             redisCommands.push(['hincrby', coin + ':stats', 'validShares', 1]);
-            if(!!_this.moniter['address'] && shareData.worker.split(".")[0] == _this.moniter.address){
-                fs.writeFileSync(_this.moniter.address+"_moniter.log" , JSON.stringify(shareData)+"\n" , {flag:"a"});
-            }   
+            
+
         } else {
             redisCommands.push(['hincrby', coin + ':stats', 'invalidShares', 1]);
         }
@@ -115,3 +148,4 @@ module.exports = function(logger, poolConfig){
     };
 
 };
+

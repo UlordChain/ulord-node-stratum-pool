@@ -111,30 +111,20 @@ module.exports = function(logger){
 		        case "getConnections":
                      for(var i in pools){
                          if(pools[i].stratumServer){
-                               pools[i].stratumServer.getConnections(message.address);
-                               _this.shareProcessor.addMoniter({address:message.address})
+                               pools[i].stratumServer.getConnections(message.address);                      
                          }
                      }
+                     _this.shareProcessor.addMoniter({address:message.address})
                 break;
-                case "startRecord":
-                     for(var i in pools){
-                         if(pools[i].stratumServer){
-                               pools[i].stratumServer.startRecord(message.address);
-                         }
-                     }
+                case "addBlackMember":
+                     
+                     _this.shareProcessor.addBlackMember(message.address)
                 break;
-                case "stopRecord":
-                     for(var i in pools){
-                         if(pools[i].stratumServer){
-                               pools[i].stratumServer.stopRecord(message.address);
-                         }
-                     }
-                case "shutdown":
-                    for(var i in pools){
-                         if(pools[i].stratumServer){
-                               pools[i].stratumServer.shutdown(message.address);
-                         }
-                     }
+                case "removeBlackMember":
+                    _this.shareProcessor.removeBlackMember(message.address)
+                break;
+				case "getBlackMembers":
+                    _this.shareProcessor.getBlackMembers()
                 break;
 
         }
