@@ -18,7 +18,7 @@
         "forks": 4
     },
     "separationMode":{
-        "enabled":true,
+        "enabled":false,
         "mode":"main"
     },
     "defaultPoolConfigs": {
@@ -47,11 +47,7 @@
         "host": "0.0.0.0",
         "port": 8080,
         "stratumHost": "u1pool.com",
-		"balance":{
-            "enabled":false,
-            "threads":1
-        },
-        "stats": {
+	    "stats": {
             "updateInterval": 60,
             "historicalRetention": 10800,
             "hashrateWindow": 300
@@ -69,7 +65,8 @@
 
     "redis": {
         "host": "127.0.0.1",
-        "port": 6379
+        "port": 6379,
+		"password":""
     },
 
     "switching": {
