@@ -450,7 +450,7 @@ var stats = module.exports = function(logger){
 						}
 						for(var i in replies[0]){
 							if(i.indexOf(address)!==-1){
-								resultRaw.immature+=roundTo(parseInt(replies[0][i]),8);
+								resultRaw.immature+=roundTo(parseInt(replies[0][i])/100000000,8);
 							}
 						}
 						for(var i in replies[1]){
