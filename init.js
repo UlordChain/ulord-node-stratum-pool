@@ -385,13 +385,14 @@ var startCliListener = function(){
             case 'getConnections':
             case 'addBlackMember':           
             case 'removeBlackMember':
-            case 'recordSubmit':     
+            case 'recordSubmit':    
             Object.keys(cluster.workers).forEach(function(id) {
                 cluster.workers[id].send({type: command, address: params[0] });
             });
             reply(command +' '+ params[0]);
             break;
             case 'getBlackMembers':
+            case 'stopRecordSubmit':
             Object.keys(cluster.workers).forEach(function(id) {
                 cluster.workers[id].send({type: command});
             });

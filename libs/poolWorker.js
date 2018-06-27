@@ -110,7 +110,6 @@ module.exports = function(logger){
                      _this.shareProcessor.addMoniter({address:message.address})
                 break;
                 case "addBlackMember":
-                     
                      _this.shareProcessor.addBlackMember(message.address)
                 break;
                 case "removeBlackMember":
@@ -125,7 +124,12 @@ module.exports = function(logger){
                          }
                      }
                 break;
-
+                case 'stopRecordSubmit':
+                   for(var i in pools){
+                         if(pools[i].stratumServer){
+                               pools[i].stratumServer.stopRecordSubmit();                      
+                         }
+                    } 
         }
     });
 

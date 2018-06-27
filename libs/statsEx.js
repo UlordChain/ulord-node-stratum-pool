@@ -30,6 +30,15 @@ function getReadableHashRateString(hashrate){
 	return hashrate.toFixed(2) + byteUnits[i];
 	
 };
+function roundTo(n, digits) {
+	if (digits === undefined) {
+		digits = 0;
+	}
+	var multiplicator = Math.pow(10, digits);
+	n = parseFloat((n * multiplicator).toFixed(11));
+	var test =(Math.round(n) / multiplicator);
+	return +(test.toFixed(digits));
+}
 function sortBlockList(block1,block2){
 	return block2.split(':')[2]-block1.split(':')[2];
 }
@@ -412,6 +421,7 @@ var stats = module.exports = function(logger){
 				resultRaw.paymentsData = [];
 				resultRaw.payouts = 0;
 				resultRaw.immature = 0;
+				resultRaw.balances = 0;
 				var temp = {}
 				for(var i=0;i < _this.cacheStats.payments.length;i++){
 					temp = JSON.parse(_this.cacheStats.payments[i])
@@ -432,21 +442,25 @@ var stats = module.exports = function(logger){
 				}
 				redisClient.multi([
 					['hgetall','ulord:immature'],
+					['hgetall','ulord:balances'],
 					['hgetall','ulord:payouts']
 					]).exec(function(err,replies){
 						if(err){
 							reject(err)
 						}
 						for(var i in replies[0]){
-
 							if(i.indexOf(address)!==-1){
-								resultRaw.immature+=parseInt(replies[0][i])
+								resultRaw.immature+=roundTo(parseInt(replies[0][i]),8);
 							}
 						}
-
 						for(var i in replies[1]){
 							if(i.indexOf(address)!==-1){
-								resultRaw.payouts+=parseFloat(replies[1][i])
+								resultRaw.balances+=roundTo(parseFloat(replies[1][i]),8);
+							}
+						}
+						for(var i in replies[2]){
+							if(i.indexOf(address)!==-1){
+								resultRaw.payouts+=roundTo(parseFloat(replies[2][i]),8);
 							}
 						}
 						resolve(resultRaw)
