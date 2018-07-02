@@ -103,6 +103,12 @@ the `node-stratum-pool` and `node-multi-hashing` modules, and any config files t
 * Compare your `config.json` and `pool_configs/coin.json` configurations to the latest example ones in this repo or the ones in the setup instructions where each config field is explained. <b>You may need to modify or add any new changes.</b>
 
 
+Donations
+-------
+To support development of this project feel free to donate :)
+* UT: UW9axn8wtuwbkr2SRmo4vUraTc7tRycQF3
+
+
 Credits
 -------
 ### Z-NOMP
