@@ -20,16 +20,7 @@ function getReadableNetworkHashRateString(hashrate) {
 	return hashrate.toFixed(2) + byteUnits[i];
 
 }
-function getReadableHashRateString(hashrate){
-	var i = 0;
-	var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s' ];
-	while (hashrate >= 1000){
-		hashrate = hashrate / 1000;
-		i++;
-	}
-	return hashrate.toFixed(2) + byteUnits[i];
-	
-};
+
 function roundTo(n, digits) {
 	if (digits === undefined) {
 		digits = 0;
@@ -45,6 +36,29 @@ function sortBlockList(block1,block2){
 function sortMinerList(miner1,miner2){
 	return miner2.hashrate-miner1.hashrate;
 }
+function sortWorkerList(worker1,worker2){
+	var worker1Name = worker1.name.split(".")[1];
+	var worker2Name = worker2.name.split(".")[1];
+	var numReg = new RegExp(/\d+/);
+	var hasNum1 = numReg.test(worker1Name);
+	var hasNum2 = numReg.test(worker2Name);
+	if(!worker1.online){
+		return -1;
+	}else if(!worker2.online){
+		return 1;
+	}
+	if(hasNum1||hasNum2){
+		if(hasNum1&&hasNum2){
+			return parseInt(worker1Name.match(numReg)[0]) - parseInt(worker2Name.match(numReg)[0])
+		}else if(numReg.test(worker1Name)){
+			return 1;
+		}else {
+			return -1;
+		}
+	}else {
+		return worker1Name>worker2Name?1:-1
+	}
+}
 function hasMoreList(list,index,pageSize){
 	var hasMore = false;
 	if((index+1)*pageSize<list.length){
@@ -59,6 +73,14 @@ function hasMoreList(list,index,pageSize){
 			result:list.slice(index*pageSize)
 		}
 	}
+}
+function pageNavList(list,index,pageSize){
+	var pageAmount = Math.ceil(list.length/pageSize);
+	return {
+		pageAmount:pageAmount,
+		result:list.slice(index*pageSize,(index+1)*pageSize)
+	}
+
 }
 var stats = module.exports = function(logger){
 	var poolConfig = JSON.parse(process.env.pools);
@@ -379,7 +401,7 @@ var stats = module.exports = function(logger){
 
 				addressInfo.workerStats[z].hashrateAverage = workerHashrateAverage[addressInfo.workerStats[z].name].hashrateAverage;
 			}
-			addressInfo.workerStats = hasMoreList(addressInfo.workerStats,index,10)
+			addressInfo.workerStats = pageNavList(addressInfo.workerStats.sort(sortWorkerList),index,10)
 			return addressInfo;
 		}
 
@@ -435,9 +457,9 @@ var stats = module.exports = function(logger){
 	
 				}
 				if(index==0){
-					resultRaw.paymentsData = hasMoreList(paymentsDataTmp.reverse(),index,10)
+					resultRaw.paymentsData = pageNavList(paymentsDataTmp.reverse(),index,10)
 				}else {
-					resultRaw.paymentsData = hasMoreList(paymentsDataTmp.reverse(),index,10)
+					resultRaw.paymentsData = pageNavList(paymentsDataTmp.reverse(),index,10)
 					resolve(resultRaw)
 				}
 				redisClient.multi([

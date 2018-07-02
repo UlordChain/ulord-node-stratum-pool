@@ -84,11 +84,11 @@ module.exports = function(logger, poolConfig){
         this.blackMembers.push(address)
     }   
 	this.getBlackMembers = function(){
-        fs.unlink(path.join(__dirname,'./logs/blackMembers.log'), function(err) {
-            fs.writeFileSync(path.join(__dirname,"./logs/blackMembers.log"),_this.blackMembers.join(),{flag:'a'});
+        fs.unlink('./logs/blackMembers.log', function(err) {
+            fs.writeFileSync("./logs/blackMembers.log",_this.blackMembers.join(),{flag:'a'});
         })
-    }
-    this.removeBlackMember = function(address){
+    }	
+	    this.removeBlackMember = function(address){
         var indexToDelete
         for(var i = 0;i < this.blackMembers.length;i++){
             if(address === this.blackMembers[i]){
