@@ -107,6 +107,7 @@ Donations
 -------
 To support development of this project feel free to donate :)
 * UT: UW9axn8wtuwbkr2SRmo4vUraTc7tRycQF3
+ ps: The donated UT flows to Ulord community foundation and is supervised by the community.
 
 
 Credits
