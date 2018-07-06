@@ -176,7 +176,7 @@ module.exports = function(logger){
                 else {
 			pool.daemon.cmd('validateaddress', [String(workerName).split(".")[0]], function (results) {
                             var isValid = results.filter(function (r) {
-                                return r.response.isvalid
+                                return r.response && r.response.isvalid
                             }).length > 0;
                             authCallback(isValid);
                         });	
