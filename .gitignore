@@ -1,0 +1,8 @@
+node_modules/
+.idea/
+config.json
+pool_configs/ulord.json
+!pool_configs/zclassic_example.json
+logs/
+*.log
+package-lock.json

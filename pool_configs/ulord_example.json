@@ -1,0 +1,106 @@
+{
+    "enabled": true,
+    "coin": "ulord.json",
+
+    "address": "Ug9HojchUocYDjhdWx4DjyHisAvWfEJq6t",
+    "_comment_address": "pools ulord address; ex, UjKNeYth9s1QkW1N6ubSorfKPA9JvkC39D",
+
+    "validateWorkerUsername": true,
+
+    "invalidAddress": "uhpm1PFGb56G3aZxF4feueab98kQcbLixk",
+
+    "walletInterval": 1,
+    "_comment_walletInterval": "Used to cache komodo coin stats, shielding not performed.",
+
+    "rewardRecipients": {
+        "USwk2sXKpJr3MTM4KD5LPJrqqRS1dwxk8f": 1.0
+    },
+
+    "tlsOptions": {
+        "enabled": false,
+        "serverKey":"",
+        "serverCert":"",
+        "ca":""
+    },
+
+    "paymentProcessing": {
+	"minConf": 10,
+        "enabled": true,
+        "paymentMode": "pplnt",
+        "_comment_paymentMode":"prop, pplnt",
+        "paymentInterval": 14400,
+        "_comment_paymentInterval": "Interval in seconds to check and perform payments.",
+        "minimumPayment": 0.1,
+        "maxBlocksPerPayment": 50,
+        "daemon": {
+            "host": "127.0.0.1",
+            "port": 9889,
+            "user": "thgyrpc",
+            "password": "Thgy@123456"
+        }
+    },
+
+    "ports": {
+        "16666": {
+            "tls":false,
+            "diff": 2.0,
+            "varDiff": {
+                "minDiff": 1.0,
+                "maxDiff": 16,
+                "targetTime": 15,
+                "retargetTime": 60,
+                "variancePercent": 30
+            }
+        },
+	"17777": {
+            "tls":false,
+            "diff": 0.2,
+            "varDiff": {
+                "minDiff": 0.1,
+                "maxDiff": 1.0,
+                "targetTime": 15,
+                "retargetTime": 60,
+                "variancePercent": 30
+            }
+        },
+	"18888": {
+            "tls":false,
+            "diff": 0.05,
+            "varDiff": {
+                "minDiff": 0.04,
+                "maxDiff": 0.1,
+                "targetTime": 15,
+                "retargetTime": 60,
+                "variancePercent": 30
+            }
+        }
+    },
+
+    "daemons": [
+	{   
+            "host": "127.0.0.1",
+            "port": 9889,
+            "user": "thgyrpc",
+            "password": "Thgy@123456"
+        }
+    ],
+
+    "p2p": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 19333,
+        "disableTransactions": true
+    },
+
+    "mposMode": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 3306,
+        "user": "me",
+        "password": "mypass",
+        "database": "kmd",
+        "checkPassword": true,
+        "autoCreateWorker": false
+    }
+
+}
