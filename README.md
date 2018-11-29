@@ -32,7 +32,7 @@ txindex=1
 addressindex=1
 spentindex=1
 timestampindex=1
-reindex=1
+reindex=0
 ```
 
 #### 1) Downloading & Installing
